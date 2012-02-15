@@ -2,9 +2,21 @@
     
     /**
     * API Allociné Helper 2
+    * =====================
     * 
     * Utiliser plus facilement l'API d'Allociné.fr (api.allocine.fr), de Screenrush.co.uk (api.screenrush.co.uk), de Filmstarts.de (api.filmstarts.de) ou de Sensacine.com (api.sensacine.com) pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
     * Il est possible de supprimer la classe AlloData sans autre modification du code.
+    * 
+    * Codes des erreurs:
+    * ------------------
+    * 1. Aucune fonction de récupération de données distantes n'est disponible (php_curl|file_get_contents).
+    * 2. Erreur durant la récupération des données sur le serveur d'Allociné.
+    * 3. Erreur durant la conversion des données JSON en array.
+    * 4. Les mots-clés pour la recherche doivent contenir plus d'un caractère.
+    * 5. Allociné a retourné une erreur (Le message de l'erreur est le message de l'ErrorException).
+    * 6. offset inexistant (Uniquement dans la classe AlloData).
+    * 7. Ce n'est pas un lien vers une image qui a été fournit en paramètre à la méthode __construct() de la classe AlloImage. 
+    * 
     * 
     * @licence http://creativecommons.org/licenses/by-nc/2.0/
     * @author Etienne Gauvin
@@ -1165,7 +1177,7 @@
             
             if (!$this->valid())
             {
-                AlloHelper::error("This offset ($offset) does not exist.", 10);
+                AlloHelper::error("This offset ($offset) does not exist.", 6);
                 $this->position = $anciennePosition;
             }
         }
@@ -1524,7 +1536,7 @@
                 if (!empty($urlParse['path']))
                     $this->imagePath = $urlParse['path'];
                 else
-                    AlloHelper::error("This isn't a URL to an image.");
+                    AlloHelper::error("This isn't a URL to an image.", 7);
                 
                 // Parsage de l'URL
                 $explodePath = explode('/', $this->imagePath);
