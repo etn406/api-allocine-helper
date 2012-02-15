@@ -42,6 +42,10 @@
     // define( 'ALLO_DEFAULT_URL_API', "api.screenrush.co.uk" );
     // define( 'ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk" );
     
+    # Beyazperde.com, Türkiye
+    // define( 'ALLO_DEFAULT_URL_API', "api.beyazperde.com" );
+    // define( 'ALLO_DEFAULT_URL_IMAGES', "tri.acimg.net" );
+    
     # Filmstarts.de, Deutschland
     // define( 'ALLO_DEFAULT_URL_API', "api.filmstarts.de" );
     // define( 'ALLO_DEFAULT_URL_IMAGES', "bilder.filmstarts.de" );
@@ -49,10 +53,6 @@
     # Sensacine.com, España
     // define( 'ALLO_DEFAULT_URL_API', "api.sensacine.com" );
     // define( 'ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com" );
-    
-    # Beyazperde.com, Türkiye
-    // define( 'ALLO_DEFAULT_URL_API', "api.beyazperde.com" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "tri.acimg.net" );
     
     
     /**
