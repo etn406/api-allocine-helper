@@ -50,6 +50,10 @@
     // define( 'ALLO_DEFAULT_URL_API', "api.sensacine.com" );
     // define( 'ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com" );
     
+    # Beyazperde.com, Türkiye
+    // define( 'ALLO_DEFAULT_URL_API', "api.beyazperde.com" );
+    // define( 'ALLO_DEFAULT_URL_IMAGES', "tri.acimg.net" );
+    
     
     /**
     * Activer/désactiver les Exceptions
@@ -143,7 +147,7 @@
         /**
         * Modifier le langage.
         * Les initiales du langage sont telles que défini dans la liste des codes ISO 639-1.
-        * Le français (fr), l'allemand (de), l'anglais (en) et l'espagnol (es) sont disponibles.
+        * Le français (fr), l'allemand (de), l'anglais (en), le turque (tr) et l'espagnol (es) sont disponibles.
         * 
         * @see http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         * 
@@ -172,6 +176,11 @@
                 case 'en': case 'screenrush.co.uk':
                     self::$APIUrl = "api.screenrush.co.uk";
                     self::$imagesUrl = "images.screenrush.co.uk";
+                break;
+                
+                case 'tr': case 'beyazperde.com':
+                    self::$APIUrl = "api.beyazperde.com";
+                    self::$imagesUrl = "tri.acimg.net";
                 break;
             }
         }
