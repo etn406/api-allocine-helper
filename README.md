@@ -1,46 +1,6 @@
 API Allociné Helper PHP
 =======================
 
-How modify language:
---------------------
-
-The API get by default information from Allocine.com (french), but you can change this for get from over server.
-
-### Dynamically change:
-
-You can modify dynamically the server, but changements are erased when PHP is closed.
-French (fr), english (en), spanish (es) and german (de) are available, example:
-
-```
-    AlloHelper::lang('en');
-    
-    // Language is now english, data and images are retrieved from Screenrush.co.uk
-```
-
-### Change default language:
-
-For modify the default language, just comment/uncomment corresponding lines at the beginning of the file `api-allocine-helper.php`:
-
-```
-    # Allociné.fr, France
-    // define( 'ALLO_DEFAULT_URL_API', "api.allocine.fr" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr" );
-    
-    # Screenrush.co.uk, United-Kingdom
-    // define( 'ALLO_DEFAULT_URL_API', "api.screenrush.co.uk" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk" );
-    
-    # Filmstarts.de, Deutschland
-    define( 'ALLO_DEFAULT_URL_API', "api.filmstarts.de" );
-    define( 'ALLO_DEFAULT_URL_IMAGES', "bilder.filmstarts.de" );
-    
-    # Sensacine.com, España
-    // define( 'ALLO_DEFAULT_URL_API', "api.sensacine.com" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com" );
-    
-    // Language is now german, data and images are retrieved from Filmstarts.de
-```
-
 English:
 --------
 

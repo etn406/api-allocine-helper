@@ -236,10 +236,9 @@
                 $this->_presets = array();
             else {
                 if ($inverse)
-                    foreach($this->_presets as $psn => $ps) {
+                    foreach($this->_presets as $psn => $ps)
                         if (!in_array($psn, $presets))
                             unset($this->_presets[$psn]);
-                    }
                 else
                     foreach($presets as $ps)
                         unset($this->_presets[$ps]);
