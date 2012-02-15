@@ -97,7 +97,7 @@
         * @var ErrorException|null
         */
         
-        private static $errorException;
+        private static $_lastError;
         
         
         /**
