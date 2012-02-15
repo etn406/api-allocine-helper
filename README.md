@@ -8,6 +8,7 @@ L'API Allociné Helper permet d'utiliser plus facilement l'API d'Allociné, Scre
 Installation (PHP)
 ------------------
 
-This is just a script, you put it in your favorite directory and do a `require_once "/path/api-allocine-helper.php";` in your code.
+This is just a script, you put it in your favorite directory and you do a `require_once "./api-allocine-helper.php";` in your code.
 
-Il suffit de télécharger le script, le copier dans le répertoire souhaité et faire un `require_once "/path/api-allocine-helper.php";` depuis votre code.
+C'est juste un script, copiez-le dans le répertoire souhaité et faites un `require_once "./api-allocine-helper.php";` depuis votre code.
+
