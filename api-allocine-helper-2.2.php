@@ -4,7 +4,7 @@
     * API Allociné Helper 2
     * =====================
     * 
-    * Utiliser plus facilement l'API d'Allociné.fr (api.allocine.fr), de Screenrush.co.uk (api.screenrush.co.uk), de Filmstarts.de (api.filmstarts.de) ou de Sensacine.com (api.sensacine.com) pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
+    * Utiliser plus facilement l'API d'Allociné.fr (api.allocine.fr), de Screenrush.co.uk (api.screenrush.co.uk), de Filmstarts.de (api.filmstarts.de), de Beyazperde.com (api.beyazperde.com) ou de Sensacine.com (api.sensacine.com) pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
     * Il est possible de supprimer la classe AlloData sans autre modification du code.
     * 
     * Codes des erreurs:

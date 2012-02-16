@@ -4,7 +4,11 @@ API Allociné Helper PHP
 English:
 --------
 
-API Allociné Helper is support for using the API of Allociné, of Screenrush, of Sensacine and of Filmstarts: find lots of information about movies, people, tv series, etc.
+API Allociné Helper is support for using the API of [AlloCiné](http://www.allocine.fr/), of [Beyazperde](http://www.beyazperde.com/), of [Screenrush](http://www.screenrush.co.uk/), of [Sensacine](http://www.sensacine.com/) and of [Filmstarts](http://www.filmstarts.de/).
+Find lots of information about movies, people, tv series, etc, with the class **AlloHelper**.
+It is possible to manipulate received data with the class **AlloData** (optional).
+And in bonus you can modify simply posters and photos from the Allociné server just by changing the URL with the class **AlloImage**.
+
 
 ### Installation
 
@@ -60,7 +64,10 @@ Next, it's advisable to do requests in an `try{} catch(){}` block for handling e
 Français:
 ---------
 
-L'API Allociné Helper permet d'utiliser plus facilement l'API d'Allociné, Screenrush, Sensacine ou Filmstarts pour récupérer un maximum d'informations à propos de films, stars, séries TV, etc.
+L'API Allociné Helper permet d'utiliser plus facilement l'API d'[AlloCiné](http://www.allocine.fr/), [Beyazperde](http://www.beyazperde.com/), [Screenrush](http://www.screenrush.co.uk/), [Sensacine](http://www.sensacine.com/) et [Filmstarts](http://www.filmstarts.de/).  
+Trouvez des informations sur les films, stars, articles, horaires, etc, grâce à la classe **AlloHelper**.  
+Il est possible de manipuler les données reçues grâce à la classe **AlloData** (optionnel).  
+Et en bonus, vous pouvez modifier simplement les posters et images stockés sur Allociné en changeant l'URL grâce à la classe **AlloImage**.
 
 ### Installation
 
