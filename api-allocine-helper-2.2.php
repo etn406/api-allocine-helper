@@ -1313,6 +1313,21 @@
         
         
         /**
+        * Image par défaut
+        * 
+        * @return this
+        */
+        
+        public function reset( )
+        {
+            $this->destroyBorder();
+            $this->destroyIcon();
+            $this->maxSize();
+            
+            return $this;
+        }
+        
+        /**
         * Modifier l'icône sur l'image.
         * 
         * @param string $position='c' La position de l'icône par rapport au centre de l'image (en une ou deux lettres), d'après la rose des sable. Renseigner une position invalide (telle que 'c') pour centrer l'icône.
