@@ -4,10 +4,10 @@ API Allociné Helper PHP
 English:
 --------
 
-API Allociné Helper is support for using the API of [AlloCiné](http://www.allocine.fr/), of [Beyazperde](http://www.beyazperde.com/), of [Screenrush](http://www.screenrush.co.uk/), of [Sensacine](http://www.sensacine.com/) and of [Filmstarts](http://www.filmstarts.de/).
-Find lots of information about movies, people, tv series, etc, with the class **AlloHelper**.
-It is possible to manipulate received data with the class **AlloData** (optional).
-And in bonus you can modify simply posters and photos from the Allociné server just by changing the URL with the class **AlloImage**.
+API Allociné Helper is a support for using the API of [AlloCiné](http://www.allocine.fr/), of [Beyazperde](http://www.beyazperde.com/), of [Screenrush](http://www.screenrush.co.uk/), of [Sensacine](http://www.sensacine.com/) and of [Filmstarts](http://www.filmstarts.de/).
+Find a lot of information about movies, people, tv series, etc, with the class **AlloHelper**.
+It is possible to manipulate the received data with the class **AlloData** (optional).
+And as a bonus, you can simply modify posters and photos from the Allociné server just by changing the URL with the class **AlloImage**.
 
 
 ### Installation
@@ -18,7 +18,7 @@ This is just a script, you put it in your favorite directory and you do a `requi
 
 Usage is very simple, however it is strongly advisable to know OOP, and the `try{} catch(){}` block.
 
-First, creat an `AlloHelper` object:
+First, create an `AlloHelper` object:
 
 ```
 <?php
@@ -30,7 +30,7 @@ First, creat an `AlloHelper` object:
     
 ```
 
-For more clarity, we define parameters before: the movie's code, and the quantity of information to get.
+For more clarity, we should define parameters before: the movie's code, and the quantity of information to get.
 
 ```
     $code = 27061;
