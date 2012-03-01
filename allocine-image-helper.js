@@ -114,13 +114,7 @@ var AlloImage = function( url )
 		}
 		
 		this.imageHost = (urlParse['host'] !== undefined) ? urlParse['host'] : AIH_DEFAULT_IMAGE_HOST;
-		
-		if (urlParse['path'] !== undefined)
-			this.imagePath = urlParse['path'];
-		else {
-			alert("Ceci n'est pas un lien vers une image.");
-			return false;
-		}
+		this.imagePath = (urlParse['path'] !== undefined) ? urlParse['path'] : AIH_DEFAULT_IMAGE_PATH;
 	}
 
 	// Parsage de l'URL
