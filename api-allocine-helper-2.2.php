@@ -1256,7 +1256,17 @@
         
         public function implode( $separator = ', ', $lastSeparator = ' et ', $offset = 'value' )
         {
-            $tab = $this->_getProperty();
+            $tab = (array) $this->_getProperty();
+            
+            if ( count($tab) === 1 )
+            {
+                $data = new AlloData($tab[0]);
+                if ( isset($data[$offset]) && is_string($data[$offset]) )
+                    return $data[$offset];
+            }
+            
+            elseif ( count($tab) < 1 )   return '';
+            
             $values = array();
             
             foreach ( $tab as $i => $stab )
@@ -1268,7 +1278,10 @@
             
             $last = array_slice($values, -1, 1);
             
-            return implode( (string) $separator, array_slice( $values, 0, -1 ) ) . (string) $lastSeparator . $last[0];
+            if ( $values )
+                return implode( (string) $separator, array_slice( $values, 0, -1 ) ) . (( count($values) > 1 ) ? (string) $lastSeparator . $last[0] : '' );
+            else
+                return '';
         }
         
     }
