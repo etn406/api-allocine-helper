@@ -1212,6 +1212,7 @@
             else return self::utf8_decode($data);
         }
         
+        
         /**
         * Si l'on veut de créer/modifier une propriété (interface ArrayAccess)
         */
@@ -1222,6 +1223,7 @@
             $data = $value;
         }
         
+        
         /**
         * Lors de la vérification de l'existence d'une propriété avec isset (interface ArrayAccess)
         */
@@ -1231,6 +1233,7 @@
             return ($this->_getProperty($this->_position, true) !== null);
         }
         
+        
         /**
         * Il n'est pas possible de détruire une la variable référencée, seule la référence est détruite...
         * De toute façon ça n'a pas d'utilité.
@@ -1239,6 +1242,33 @@
         public function offsetUnset($offset)
         {
             return;
+        }
+        
+        
+        /**
+        * Coller toutes les valeurs/sous-valeurs du tableau associatif.
+        * Exemple : $film->genre->implode( 'value' ) implosera toutes les valeurs de $film->genre[i]->value
+        * 
+        * @param string $separator=', '         Le séparateur des valeurs.
+        * @param string $lastSeparator=' et '   Le séparateur des dernière et l'avant-dernière valeurs.
+        * @param string $offset='value'         Les offsets à concaténer ('$' == 'value').
+        */
+        
+        public function implode( $separator = ', ', $lastSeparator = ' et ', $offset = 'value' )
+        {
+            $tab = $this->_getProperty();
+            $values = array();
+            
+            foreach ( $tab as $i => $stab )
+            {
+                $data = new AlloData( $stab );
+                if ( isset($data[$offset]) && is_string($data[$offset]) )
+                    $values[] = $data[$offset];
+            }
+            
+            $last = array_slice($values, -1, 1);
+            
+            return implode( (string) $separator, array_slice( $values, 0, -1 ) ) . (string) $lastSeparator . $last[0];
         }
         
     }
