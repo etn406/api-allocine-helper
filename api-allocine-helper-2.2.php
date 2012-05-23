@@ -5,7 +5,7 @@
     * =====================
     * 
     * Utiliser plus facilement l'API d'Allociné.fr (api.allocine.fr), de Screenrush.co.uk (api.screenrush.co.uk), de Filmstarts.de (api.filmstarts.de), de Beyazperde.com (api.beyazperde.com) ou de Sensacine.com (api.sensacine.com) pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
-    * Il est possible de supprimer la classe AlloData sans autre modification du code.
+    * Il est possible de supprimer la classe AlloData sans autre modification du code pour éviter son utilisation.
     * 
     * Codes des erreurs:
     * ------------------
@@ -62,7 +62,7 @@
     * @var bool
     */
     
-    define( 'ALLO_THROW_EXCEPTIONS', true );
+    define( 'ALLO_THROW_EXCEPTIONS', false );
     
     
     /**
@@ -118,10 +118,10 @@
             {
                 $error = new ErrorException( $message, $code );
                 
+                self::$_lastError = $error;
+                
                 if ( ALLO_THROW_EXCEPTIONS )
                     throw $error;
-                
-                self::$_lastError = $error;
             }
             
             return self::$_lastError;
@@ -1071,8 +1071,16 @@
                     return $data['$'];
                 
                 else
+                {
                     if (!$ignoreException)
                         AlloHelper::error("This offset ($offset) does not exist.", 6);
+                    
+                    // Eviter une erreur en retournant une référence, si les exceptions sont désactivées.
+                    $b = null;
+                    $a =&$b;
+                    
+                    return $a;
+                }
             }
         }
         
@@ -1247,14 +1255,14 @@
         
         /**
         * Coller toutes les valeurs/sous-valeurs du tableau associatif.
-        * Exemple : $film->genre->implode( 'value' ) implosera toutes les valeurs de $film->genre[i]->value
+        * Exemple : $film->genre->implode() collera toutes les valeurs de $film->genre[i]->value avec des virgules.
         * 
         * @param string $separator=', '         Le séparateur des valeurs.
         * @param string $lastSeparator=' et '   Le séparateur des dernière et l'avant-dernière valeurs.
         * @param string $offset='value'         Les offsets à concaténer ('$' == 'value').
         */
         
-        public function implode( $separator = ', ', $lastSeparator = ' et ', $offset = 'value' )
+        public function implode( $separator = ', ', $lastSeparator = ' & ', $offset = 'value' )
         {
             $tab = (array) $this->_getProperty();
             
