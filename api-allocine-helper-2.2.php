@@ -97,20 +97,20 @@
     {
         
         /**
-        * Contient la dernière ErrorException
-        * @var ErrorException|null
-        */
+         * Contient la dernière ErrorException
+         * @var ErrorException|null
+         */
         
         private static $_lastError;
         
         
         /**
-        * Provoquer une ErrorException et/ou retourne la dernière provoquée.
-        * 
-        * @param string $message=null Le message de l'erreur
-        * @param int $code=0 Le code de l'erreur
-        * @return ErrorException|null
-        */
+         * Provoquer une ErrorException et/ou retourne la dernière provoquée.
+         * 
+         * @param string $message=null Le message de l'erreur
+         * @param int $code=0 Le code de l'erreur
+         * @return ErrorException|null
+         */
         
         public static function error( $message = null, $code = 0 )
         {
@@ -129,30 +129,30 @@
         
         
         /**
-        * Contient l'adresse du site où chercher les données.
-        * @var string
-        */
+         * Contient l'adresse du site où chercher les données.
+         * @var string
+         */
         
         public static $APIUrl = ALLO_DEFAULT_URL_API;
         
         
         /**
-        * Contient l'adresse du site où chercher les images.
-        * @var string
-        */
+         * Contient l'adresse du site où chercher les images.
+         * @var string
+         */
         
         public static $imagesUrl = ALLO_DEFAULT_URL_IMAGES;
         
         
         /**
-        * Modifier le langage.
-        * Les initiales du langage sont telles que défini dans la liste des codes ISO 639-1.
-        * Le français (fr), l'allemand (de), l'anglais (en), le turque (tr) et l'espagnol (es) sont disponibles.
-        * 
-        * @see http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        * 
-        * @param string $lang=null Les initiales du langage.
-        */
+         * Modifier le langage.
+         * Les initiales du langage sont telles que défini dans la liste des codes ISO 639-1.
+         * Le français (fr), l'allemand (de), l'anglais (en), le turque (tr) et l'espagnol (es) sont disponibles.
+         * 
+         * @see http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+         * 
+         * @param string $lang=null Les initiales du langage.
+         */
         
         public static function lang( $lang = null )
         {
@@ -187,20 +187,28 @@
         
         
         /**
-        * Préréglages pour les paramètres d'URL
-		* @var array
-        */
+         * Préréglages pour les paramètres d'URL
+		 * @var array
+         */
         
         private $_presets = array();
         
         
         /**
-        * Ajouter/modifier des préréglages.
-        * 
-        * @param array|string $preset Si c'est un array alors chaque paire "clé" => "valeur" ou "clé=valeur" sera enregistrée dans les préréglages, sinon si c'est une chaîne alors c'est le nom du préréglage et $value est sa valeur.
-        * @param string|array|int $value La valeur du préréglage si $preset est une chaîne de caractères.
-        * @return this
-        */
+         * Gestionnaire cURL utilisé pour la prochaine requête.
+         * @var resource
+         */
+        
+        private $_cURL;
+        
+        
+        /**
+         * Ajouter/modifier des préréglages.
+         * 
+         * @param array|string $preset Si c'est un array alors chaque paire "clé" => "valeur" ou "clé=valeur" sera enregistrée dans les préréglages, sinon si c'est une chaîne alors c'est le nom du préréglage et $value est sa valeur.
+         * @param string|array|int $value La valeur du préréglage si $preset est une chaîne de caractères.
+         * @return this
+         */
         
         public function set( $preset, $value=null )
         {
@@ -216,11 +224,11 @@
         
         
         /**
-        * Retourne les préréglages.
-        * 
-        * @param string|null $preset=null Indiquer le nom d'un préréglage pour connaître sa valeur.
-        * @return mixed
-        */
+         * Retourne les préréglages.
+         * 
+         * @param string|null $preset=null Indiquer le nom d'un préréglage pour connaître sa valeur.
+         * @return mixed
+         */
         
         public function getPresets( $preset = null )
         {
@@ -232,12 +240,12 @@
         
         
         /**
-        * Effacer un/des préréglages.
-        * 
-        * @param array $presets=array() Indiquer les préréglages à effacer ou laisser vide pour tout effacer.
-        * @param bool $inverse=false Si $inverse vaut true alors tous les préréglages seront effacés sauf ceux indiqués dans $presets.
-        * @return this
-        */
+         * Effacer un/des préréglages.
+         * 
+         * @param array $presets=array() Indiquer les préréglages à effacer ou laisser vide pour tout effacer.
+         * @param bool $inverse=false Si $inverse vaut true alors tous les préréglages seront effacés sauf ceux indiqués dans $presets.
+         * @return this
+         */
         
         public function clearPresets( $presets = array(), $inverse = false )
         {
@@ -258,13 +266,13 @@
         
         
         /**
-        * Retourne un URL créé à partir de différentes données.
-        * Les paramètres seront ajoutés dans l'ordre, sous leur forme "clé=valeur" ou "valeur" si il n'y a pas de clé.
-        * Si c'est un array les sous éléments seront implosés et séparés par des virgules "clé" => array("val1", "val2", "val3") deviendra "clé=val1,val2,val3"
-        * Les valeurs et les clés ne passent pas par la fonction urlencode !
-        * 
-        * @param string $type Le type de données à récupérer (exemple: "rest/v3/movie")
-        */
+         * Retourne un URL créé à partir de différentes données.
+         * Les paramètres seront ajoutés dans l'ordre, sous leur forme "clé=valeur" ou "valeur" si il n'y a pas de clé.
+         * Si c'est un array les sous éléments seront implosés et séparés par des virgules "clé" => array("val1", "val2", "val3") deviendra "clé=val1,val2,val3"
+         * Les valeurs et les clés ne passent pas par la fonction urlencode !
+         * 
+         * @param string $type Le type de données à récupérer (exemple: "rest/v3/movie")
+         */
         
         protected function creatURL( $type )
         {
@@ -293,17 +301,42 @@
         
         
         /**
-        * Récupérer des données JSON et les convertir depuis un URL grâce à php_curl, ou à défaut file_get_contents().
-        * 
-        * @param string $url L'URL vers lequel aller chercher les données JSON.
-        * @return array|false Un array contenant les données en cas de succès, false si une erreur est survenue.
-        */
+          * Retourne le gestionnaire cURL qui sera utilisé pour la prochaine requête.
+          * 
+          * @see http://php.net/manual/fr/ref.curl.php
+          * @see http://php.net/manual/fr/function.curl-setopt.php
+          * @return resource|null
+          * @throws ErrorException
+          */
+        
+        public function getCURLHandler()
+        {
+            if ( function_exists("curl_init") )
+            {
+                if ($this->_cURL === null)
+                    return ($this->_cURL = curl_init());
+                else
+                    return $this->_cURL;
+            }
+            else
+                $this->error("The extension php_curl must be enabled.", 1);
+        }
+        
+        
+        /**
+         * Récupérer des données JSON et les convertir depuis un URL grâce à php_curl, ou à défaut file_get_contents().
+         * 
+         * @param string $url L'URL vers lequel aller chercher les données JSON.
+         * @return array|false Un array contenant les données en cas de succès, false si une erreur est survenue.
+         * @throws ErrorException
+         */
         
         protected function getDataFromURL ( $url )
         {
             if ( function_exists("curl_init") )
             {
-                $curl = curl_init();
+                $curl = ($this->cURL == null) ? curl_init() : $this->_cURL;
+                
                 curl_setopt ($curl, CURLOPT_URL, $url);
                 curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, 10);
                 curl_setopt ($curl, CURLOPT_RETURNTRANSFER, true);
@@ -339,17 +372,18 @@
         
         
         /*
-        * Méthodes de récupération des données
-        */
+         * Méthodes de récupération des données
+         */
         
         /**
-        * Récupérer les données pour un type de données et un élément du tableau retourné donné.
-        * Utilisé en interne pour diminuer et clarifier le code dans les méthodes ne nécessitant pas de traitement particulier sur leurs données.
-        * 
-        * @param string $type Voir AlloHelper::creatURL()
-        * @param string $container L'élément contenant les données dans le tableau retourné par Allociné
-        * @return AlloData|array|false
-        */
+         * Récupérer les données pour un type de données et un élément du tableau retourné donné.
+         * Utilisé en interne pour diminuer et clarifier le code dans les méthodes ne nécessitant pas de traitement particulier sur leurs données.
+         * 
+         * @param string $type Voir AlloHelper::creatURL()
+         * @param string $container L'élément contenant les données dans le tableau retourné par Allociné
+         * @return AlloData|array|false
+         * @throws ErrorException
+         */
         
         protected function getData( $type, $container, &$url )
         {
@@ -380,18 +414,19 @@
         }
         
         /**
-        * Effectuer une recherche sur Allociné.
-        * Possibilité de trier les résultats de films par ressemblance avec la chaîne de recherche.
-        * 
-        * @param string $q La chaîne de recherche.
-        * @param int $page=1 La page des résultats.
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param bool $sortMovies=false Réorganiser ou non les films selon la ressemblance entre leur titre et la chaîne de recherche.
-        * @param array $filter=array() Filtrer les résultats pour gagner en rapidité. Peut-être remplit par "movietheater", "movie", "theater", "person", "news", "tvseries", "location", "character", "video" ou "photo".
-        * @param &$url=null Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Effectuer une recherche sur Allociné.
+         * Possibilité de trier les résultats de films par ressemblance avec la chaîne de recherche.
+         * 
+         * @param string $q La chaîne de recherche.
+         * @param int $page=1 La page des résultats.
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param bool $sortMovies=false Réorganiser ou non les films selon la ressemblance entre leur titre et la chaîne de recherche.
+         * @param array $filter=array() Filtrer les résultats pour gagner en rapidité. Peut-être remplit par "movietheater", "movie", "theater", "person", "news", "tvseries", "location", "character", "video" ou "photo".
+         * @param &$url=null Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         * @throws ErrorException
+         */
         
         public function search( $q, $page = 1, $count = 10, $sortMovies = false, array $filter = array(), &$url = null )
         {
@@ -513,17 +548,17 @@
         
         
         /**
-        * Récupérer les critiques des spectateurs et de la presse à propos d'un film, d'une série TV.
-        * 
-        * @param int $code L'identifiant du film/de la série.
-        * @param string $filter='press' Le type de critique ('press' ou 'public') à renvoyer.
-        * @param string $type='movie' Le type de données ("movie" ou "tvseries") auquel faire correspondre l'identifiant $code.
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param int $page=1 La page des résultats.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer les critiques des spectateurs et de la presse à propos d'un film, d'une série TV.
+         * 
+         * @param int $code L'identifiant du film/de la série.
+         * @param string $filter='press' Le type de critique ('press' ou 'public') à renvoyer.
+         * @param string $type='movie' Le type de données ("movie" ou "tvseries") auquel faire correspondre l'identifiant $code.
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param int $page=1 La page des résultats.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function reviewlist( $code, $filter='press', $type='movie', $count = 10, $page = 1, &$url = null )
         {
@@ -553,16 +588,16 @@
         
         
         /**
-        * Récupérer une liste de films en fonction de différents paramètres.
-        * 
-        * @param string $filter='nowshowing' Le type de résultats à afficher: 'nowshowing' (films au cinéma) ou 'comingsoon' (bientôt au cinéma);
-        * @param string $order='dateasc' L'ordre dans lequel afficher les données: 'dateasc' (chronologique), 'datedesc' (anti-chronologique), 'theatercount' (nombre de salles) ou 'toprank' (popularité).
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param int $page=1 La page des résultats.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer une liste de films en fonction de différents paramètres.
+         * 
+         * @param string $filter='nowshowing' Le type de résultats à afficher: 'nowshowing' (films au cinéma) ou 'comingsoon' (bientôt au cinéma);
+         * @param string $order='dateasc' L'ordre dans lequel afficher les données: 'dateasc' (chronologique), 'datedesc' (anti-chronologique), 'theatercount' (nombre de salles) ou 'toprank' (popularité).
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param int $page=1 La page des résultats.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function movielist( $filter=array('nowshowing'), $order=array('dateasc'), $count = 10, $page = 1, &$url = null )
         {
@@ -580,17 +615,17 @@
         
         
         /**
-        * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un code postal.
-        * 
-        * @param mixed $zip Le code postal de la ville du/des cinéma(s).
-        * @param $date=null Spécifier une date pour les horaires.
-        * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param int $page=1 La page des résultats.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un code postal.
+         * 
+         * @param mixed $zip Le code postal de la ville du/des cinéma(s).
+         * @param $date=null Spécifier une date pour les horaires.
+         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param int $page=1 La page des résultats.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function showtimesByZip( $zip, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
         {
@@ -612,19 +647,19 @@
         
         
         /**
-        * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction de coordonnées géographiques (latitude, longitude [, rayon]).
-        * 
-        * @param float $lat La coordonnée latitude du cinéma.
-        * @param float $long La coordonnée longitude du cinéma.
-        * @param int $radius Le rayon dans lequel chercher.
-        * @param $date=null Spécifier une date pour les horaires.
-        * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param int $page=1 La page des résultats.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction de coordonnées géographiques (latitude, longitude [, rayon]).
+         * 
+         * @param float $lat La coordonnée latitude du cinéma.
+         * @param float $long La coordonnée longitude du cinéma.
+         * @param int $radius Le rayon dans lequel chercher.
+         * @param $date=null Spécifier une date pour les horaires.
+         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param int $page=1 La page des résultats.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function showtimesByPosition( $lat, $long, $radius=10, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
         {
@@ -648,17 +683,17 @@
         
         
         /**
-        * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un ou de plusieurs identifiant(s) de cinéma(s);
-        * 
-        * @param array|string $theaters Un identifiant/une liste d'identifiants de cinéma(s).
-        * @param $date=null Spécifier une date pour les horaires.
-        * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-        * @param int $count=10 Le nombre maximum de résultats par page.
-        * @param int $page=1 La page des résultats.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un ou de plusieurs identifiant(s) de cinéma(s);
+         * 
+         * @param array|string $theaters Un identifiant/une liste d'identifiants de cinéma(s).
+         * @param $date=null Spécifier une date pour les horaires.
+         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de résultats par page.
+         * @param int $page=1 La page des résultats.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function showtimesByTheaters( $theaters, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
         {
@@ -679,14 +714,15 @@
         
         
         /**
-        * Récupérer toutes les informations sur un film.
-        * 
-        * @param int $code L'identifiant du film.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur un film.
+         * 
+         * @param int $code L'identifiant du film.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         * @throws ErrorException
+         */
         
         public function movie( $code, $profile = 'medium', &$url = null )
         {
@@ -746,14 +782,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur un article.
-        * 
-        * @param int $code L'identifiant de l'article.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur un article.
+         * 
+         * @param int $code L'identifiant de l'article.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function news( $code, $profile = 'medium', &$url = null )
         {
@@ -780,14 +816,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur une personne.
-        * 
-        * @param int $code L'identifiant de la personne.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur une personne.
+         * 
+         * @param int $code L'identifiant de la personne.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function person( $code, $profile = 'medium', &$url = null )
         {
@@ -814,14 +850,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur un media (vidéo/photo).
-        * 
-        * @param int $code L'identifiant du media.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur un media (vidéo/photo).
+         * 
+         * @param int $code L'identifiant du media.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function media( $code, $profile = 'medium', &$url = null )
         {
@@ -848,14 +884,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur la filmographie d'une personne.
-        * 
-        * @param int $code L'identifiant de la personne.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur la filmographie d'une personne.
+         * 
+         * @param int $code L'identifiant de la personne.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function filmography( $code, $profile = 'medium', &$url = null )
         {
@@ -882,14 +918,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur une série TV.
-        * 
-        * @param int $code L'identifiant de la série TV.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur une série TV.
+         * 
+         * @param int $code L'identifiant de la série TV.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function tvserie( $code, $profile = 'medium', &$url = null )
         {
@@ -916,14 +952,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur une saison d'une série TV.
-        * 
-        * @param int $code L'identifiant de la saison.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur une saison d'une série TV.
+         * 
+         * @param int $code L'identifiant de la saison.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function season( $code, $profile = 'medium', &$url = null )
         {
@@ -950,14 +986,14 @@
         
         
         /**
-        * Récupérer toutes les informations sur un épisode d'une saison d'une série TV.
-        * 
-        * @param int $code L'identifiant de l'épisode.
-        * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-        * @param &$url Contiendra l'URL utilisé.
-        * 
-        * @return AlloData|array|false
-        */
+         * Récupérer toutes les informations sur un épisode d'une saison d'une série TV.
+         * 
+         * @param int $code L'identifiant de l'épisode.
+         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisé.
+         * 
+         * @return AlloData|array|false
+         */
         
         public function episode( $code, $profile = 'medium', &$url = null )
         {
@@ -996,27 +1032,27 @@
     {
         
         /**
-        * Contiendra les données
-        * @var array
-        */
+         * Contiendra les données
+         * @var array
+         */
         
         private $_data = array();
         
         
         /**
-        * Valeur de remplacement pour les symboles '$' ou false pour ne rien modifier.
-        */
+         * Valeur de remplacement pour les symboles '$' ou false pour ne rien modifier.
+         */
         
         const REPLACEMENT_OF_DOLLAR_SIGN = 'value';
         
         
         /**
-        * Décoder une variable depuis l'UTF8.
-        * 
-        * @param mixed $var Seules les chaînes sont décodées, mais aucune erreur ne sera provoquée si ce n'en est pas une.
-        * @param mixed $tab=false Si ce paramètre vaut true alors le tableau sera parcouru de manière récursive et toutes les chaînes de caractèrezs seront converties.
-        * @return array|string Le tableau|la chaîne décodé(e)
-        */
+         * Décoder une variable depuis l'UTF8.
+         * 
+         * @param mixed $var Seules les chaînes sont décodées, mais aucune erreur ne sera provoquée si ce n'en est pas une.
+         * @param mixed $tab=false Si ce paramètre vaut true alors le tableau sera parcouru de manière récursive et toutes les chaînes de caractèrezs seront converties.
+         * @return array|string Le tableau|la chaîne décodé(e)
+         */
         
         public static function utf8_decode( $var, $tab = false )
         {
@@ -1038,8 +1074,8 @@
         
         
         /**
-        * Constructeur
-        */
+         * Constructeur
+         */
         
         public function __construct( $data )
         {
@@ -1048,11 +1084,12 @@
         
         
         /**
-        * Retourne un pointeur sur une valeur existante dans les données enregistrées, ou null si elle n'existe pas.
-        * 
-        * @param $offset=null Retourne un pointeur sur tout le tableau si $offset==null
-        * @return Une référence vers la valeur demandée, ou null si elle n'existe pas.
-        */
+         * Retourne un pointeur sur une valeur existante dans les données enregistrées, ou null si elle n'existe pas.
+         * 
+         * @param $offset=null Retourne un pointeur sur tout le tableau si $offset==null
+         * @return Une référence vers la valeur demandée, ou null si elle n'existe pas.
+         * @throws ErrorException
+         */
         
         protected function &_getProperty( $offset = null, $ignoreException = false )
         {
@@ -1085,9 +1122,9 @@
         }
         
         /**
-        * Retourne les données sous forme d'un array
-        * 
-        */
+         * Retourne les données sous forme d'un array
+         * 
+         */
         
         public function getArray()
         {
@@ -1096,9 +1133,9 @@
         
         
         /**
-        * Si l'on essaie d'accéder à une propriété inexistante (donc un élément de $this->_data)
-        * 
-        */
+         * Si l'on essaie d'accéder à une propriété inexistante (donc un élément de $this->_data)
+         * 
+         */
         
         public function __get( $offset )
         {
@@ -1110,9 +1147,9 @@
         
         
         /**
-        * Impossible de créer/modifier une propriété
-        * 
-        */
+         * Impossible de créer/modifier une propriété
+         * 
+         */
         
         public function __set( $offset, $value )
         {
@@ -1122,19 +1159,19 @@
         
         
         /*
-        * Implémentation des interfaces
-        */
+         * Implémentation des interfaces
+         */
         
         /**
-        * Pointeur interne
-        * @var int
-        */
+         * Pointeur interne
+         * @var int
+         */
         
         private $_position = 0;
         
         /**
-        * Retourne la valeur de l'index courant.
-        */
+         * Retourne la valeur de l'index courant.
+         */
         
         public function current( )
         {
@@ -1145,8 +1182,8 @@
         }
         
         /**
-        * Retourne true ou false selon l'existence ou non d'une occurence dans les données.
-        */
+         * Retourne true ou false selon l'existence ou non d'une occurence dans les données.
+         */
         
         public function valid( )
         {
@@ -1154,8 +1191,8 @@
         }
         
         /**
-        * Retourne la position actuelle.
-        */
+         * Retourne la position actuelle.
+         */
         
         public function key( )
         {
@@ -1163,8 +1200,8 @@
         }
         
         /**
-        * Incrémente l'index.
-        */
+         * Incrémente l'index.
+         */
         
         public function next( )
         {
@@ -1173,8 +1210,8 @@
         
         
         /**
-        * Réinitialise l'index.
-        */
+         * Réinitialise l'index.
+         */
         
         public function rewind( )
         {
@@ -1183,8 +1220,11 @@
         
         
         /**
-        * Pour modifier directement la position dans le tableau.
-        */
+         * Pour modifier directement la position dans le tableau.
+         * 
+         * @param int $newPosition
+         * @throws ErrorException
+         */
         
         public function seek( $newPosition )
         {
@@ -1200,8 +1240,10 @@
         
         
         /**
-        * Retourne le nombre d'occurences dans le tableau.
-        */
+         * Retourne le nombre d'occurences dans le tableau.
+         * 
+         * @return int
+         */
         
         public function count()
         {
@@ -1209,8 +1251,11 @@
         }
         
         /**
-        * Si l'on essaie d'accéder à l'objet comme à un tableau.
-        */
+         * Si l'on essaie d'accéder à l'objet comme à un tableau.
+         * 
+         * @param string|int $offset
+         * @return mixed
+         */
         
         public function offsetGet( $offset )
         {
@@ -1222,8 +1267,11 @@
         
         
         /**
-        * Si l'on veut de créer/modifier une propriété (interface ArrayAccess)
-        */
+         * Si l'on veut de créer/modifier une propriété (interface ArrayAccess)
+         * 
+         * @param string|int $offset
+         * @param mixed $value
+         */
         
         public function offsetSet( $offset, $value )
         {
@@ -1233,8 +1281,11 @@
         
         
         /**
-        * Lors de la vérification de l'existence d'une propriété avec isset (interface ArrayAccess)
-        */
+         * Lors de la vérification de l'existence d'une propriété avec isset (interface ArrayAccess)
+         * 
+         * @param string|int $offset
+         * @return bool
+         */
         
         public function offsetExists( $offset )
         {
@@ -1243,9 +1294,9 @@
         
         
         /**
-        * Il n'est pas possible de détruire une la variable référencée, seule la référence est détruite...
-        * De toute façon ça n'a pas d'utilité.
-        */
+         * Il n'est pas possible de détruire une la variable référencée, seule la référence est détruite...
+         * De toute façon ça n'a pas d'utilité.
+         */
         
         public function offsetUnset($offset)
         {
@@ -1254,13 +1305,14 @@
         
         
         /**
-        * Coller toutes les valeurs/sous-valeurs du tableau associatif.
-        * Exemple : $film->genre->implode() collera toutes les valeurs de $film->genre[i]->value avec des virgules.
-        * 
-        * @param string $separator=', '         Le séparateur des valeurs.
-        * @param string $lastSeparator=' et '   Le séparateur des dernière et l'avant-dernière valeurs.
-        * @param string $offset='value'         Les offsets à concaténer ('$' == 'value').
-        */
+         * Coller toutes les valeurs/sous-valeurs du tableau associatif.
+         * Exemple : $film->genre->implode() collera toutes les valeurs de $film->genre[i]->value avec des virgules.
+         * 
+         * @param string $separator=', '         Le séparateur des valeurs.
+         * @param string $lastSeparator=' et '   Le séparateur des dernière et l'avant-dernière valeurs.
+         * @param string $offset='value'         Les offsets à concaténer ('$' == 'value').
+         * @return string
+         */
         
         public function implode( $separator = ', ', $lastSeparator = ' & ', $offset = 'value' )
         {
@@ -1304,17 +1356,17 @@
     {
         
         /**
-        * Répertoire de l'image par défaut
-        * @const string
-        */
+         * Répertoire de l'image par défaut
+         * @const string
+         */
         
         const DEFAULT_IMAGE_PATH = "commons/emptymedia/AffichetteAllocine.gif";
         
         
         /**
-        * Liste des icônes diponibles
-        * @var array
-        */
+         * Liste des icônes diponibles
+         * @var array
+         */
         
         public static $icons = array(
             'play.png' => null,
@@ -1324,50 +1376,50 @@
         
         
         /**
-        * Contient les paramètres de l'icône.
-        * @var array|false
-        */
+         * Contient les paramètres de l'icône.
+         * @var array|false
+         */
         
         private $imageIcon = false;
         
         
         /**
-        * Contient les paramètres de la bordure
-        * @var array|false
-        */
+         * Contient les paramètres de la bordure
+         * @var array|false
+         */
         
         private $imageBorder = false;
         
         
         /**
-        * Contient les paramètres de la taille de l'image.
-        * @var array|false
-        */
+         * Contient les paramètres de la taille de l'image.
+         * @var array|false
+         */
         
         private $imageSize = false;
         
         
         /**
-        * Contient l'adresse du serveur de l'image.
-        * @var string
-        */
+         * Contient l'adresse du serveur de l'image.
+         * @var string
+         */
         
         private $imageHost;
         
         
         /**
-        * Contient le répertoire de l'image sur Allociné.
-        * @var string
-        */
+         * Contient le répertoire de l'image sur Allociné.
+         * @var string
+         */
         
         private $imagePath;
         
         
         /**
-        * Image par défaut
-        * 
-        * @return this
-        */
+         * Image par défaut
+         * 
+         * @return this
+         */
         
         public function reset( )
         {
@@ -1379,13 +1431,13 @@
         }
         
         /**
-        * Modifier l'icône sur l'image.
-        * 
-        * @param string $position='c' La position de l'icône par rapport au centre de l'image (en une ou deux lettres), d'après la rose des sable. Renseigner une position invalide (telle que 'c') pour centrer l'icône.
-        * @param int $margin=4 Le nombre de pixel entre l'icône et le(s) bord(s) le(s) plus proche(s).
-        * @param string $icon='play.png' Le nom de l'icône à ajouter. La liste des icônes se trouve dans AlloImage::$icons.
-        * @return this
-        */
+         * Modifier l'icône sur l'image.
+         * 
+         * @param string $position='c' La position de l'icône par rapport au centre de l'image (en une ou deux lettres), d'après la rose des sable. Renseigner une position invalide (telle que 'c') pour centrer l'icône.
+         * @param int $margin=4 Le nombre de pixel entre l'icône et le(s) bord(s) le(s) plus proche(s).
+         * @param string $icon='play.png' Le nom de l'icône à ajouter. La liste des icônes se trouve dans AlloImage::$icons.
+         * @return this
+         */
         
         public function icon( $position='c', $margin=4, $icon='play.png' )
         {
@@ -1411,10 +1463,10 @@
         
         
         /**
-        * Renvoie les paramètres enregistrés pour l'icône.
-        * 
-        * @return array|false
-        */
+         * Renvoie les paramètres enregistrés pour l'icône.
+         * 
+         * @return array|false
+         */
         
         public function getIcon()
         {
@@ -1423,10 +1475,10 @@
         
         
         /**
-        * Efface les paramètres enregistrés pour l'icône.
-        * 
-        * @return this
-        */
+         * Efface les paramètres enregistrés pour l'icône.
+         * 
+         * @return this
+         */
         
         public function destroyIcon()
         {
@@ -1436,12 +1488,12 @@
         
         
         /**
-        * Modifier la bordure de l'image.
-        * 
-        * @param int $size=1 L'épaisseur de la bordure en pixels.
-        * @param string $color='000000' La couleur de la bordure en hexadécimal (sans # initial). [http://en.wikipedia.org/wiki/Web_colors#Hex_triplet]
-        * @return this
-        */
+         * Modifier la bordure de l'image.
+         * 
+         * @param int $size=1 L'épaisseur de la bordure en pixels.
+         * @param string $color='000000' La couleur de la bordure en hexadécimal (sans # initial). [http://en.wikipedia.org/wiki/Web_colors#Hex_triplet]
+         * @return this
+         */
         
         public function border( $size=1, $color="000000" )
         {
@@ -1455,10 +1507,10 @@
         
         
         /**
-        * Renvoie les paramètres enregistrés de la bordure.
-        * 
-        * @return array|false
-        */
+         * Renvoie les paramètres enregistrés de la bordure.
+         * 
+         * @return array|false
+         */
         
         public function getBorder()
         {
@@ -1467,10 +1519,10 @@
         
         
         /**
-        * Efface la bordure.
-        * 
-        * @return this
-        */
+         * Efface la bordure.
+         * 
+         * @return this
+         */
         
         public function destroyBorder()
         {
@@ -1480,14 +1532,14 @@
         
         
         /**
-        * Modifier proportionnellement la taille de l'image au plus petit.
-        * Si les deux paramètres sont laissés tels quels ($xmax='x' et $ymax='y'), l'image sera de taille normale.
-        * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::cut() (Les deux méthodes ne peuvent être utilisées en même temps).
-        * 
-        * @param int $xmax='x' La largeur maximale de l'image, en pixels. Laisser 'x' pour une largeur automatique en fonction de $ymax.
-        * @param int $ymax='y' La hauteur maximale de l'image, en pixels. Laisser 'y' pour une hauteur automatique en fonction de $xmax.
-        * @return this
-        */
+         * Modifier proportionnellement la taille de l'image au plus petit.
+         * Si les deux paramètres sont laissés tels quels ($xmax='x' et $ymax='y'), l'image sera de taille normale.
+         * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::cut() (Les deux méthodes ne peuvent être utilisées en même temps).
+         * 
+         * @param int $xmax='x' La largeur maximale de l'image, en pixels. Laisser 'x' pour une largeur automatique en fonction de $ymax.
+         * @param int $ymax='y' La hauteur maximale de l'image, en pixels. Laisser 'y' pour une hauteur automatique en fonction de $xmax.
+         * @return this
+         */
         
         public function resize( $xmax='x', $ymax='y' )
         {
@@ -1502,13 +1554,13 @@
         
         
         /**
-        * Redimensionner l'image au plus petit, puis couper les bords trop grands.
-        * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::resize() (Les deux méthodes ne peuvent être utilisées en même temps).
-        * 
-        * @param int $xmax La largeur maximale de l'image, en pixels.
-        * @param int $ymax La hauteur maximale de l'image, en pixels.
-        * @return this
-        */
+         * Redimensionner l'image au plus petit, puis couper les bords trop grands.
+         * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::resize() (Les deux méthodes ne peuvent être utilisées en même temps).
+         * 
+         * @param int $xmax La largeur maximale de l'image, en pixels.
+         * @param int $ymax La hauteur maximale de l'image, en pixels.
+         * @return this
+         */
         
         public function cut( $xmax, $ymax )
         {
@@ -1523,10 +1575,10 @@
         
         
         /**
-        * Retourne les paramètres enregistrés du redimensionnement/recoupe de l'image.
-        * 
-        * @return array|false
-        */
+         * Retourne les paramètres enregistrés du redimensionnement/recoupe de l'image.
+         * 
+         * @return array|false
+         */
         
         public function getSize()
         {
@@ -1535,10 +1587,10 @@
         
         
         /**
-        * Règle l'image à sa taille maximale (Effacer redimensionnement/recoupe)
-        * 
-        * @return array|false
-        */
+         * Règle l'image à sa taille maximale (Effacer redimensionnement/recoupe)
+         * 
+         * @return array|false
+         */
         
         public function maxSize()
         {
@@ -1548,10 +1600,10 @@
         
         
         /**
-        * Retourne le host de l'image.
-        * 
-        * @return string
-        */
+         * Retourne le host de l'image.
+         * 
+         * @return string
+         */
         
         public function getImageHost()
         {
@@ -1560,11 +1612,11 @@
         
         
         /**
-        * Modifier le serveur (host) de l'image.
-        * 
-        * @param string $server L'adresse sans slash du serveur (ex: 'images.allocine.fr'), le même paramètre que pour AlloHelper::lang(), ou 'default' pour régler selon le langage enregistré.
-        * @return this
-        */
+         * Modifier le serveur (host) de l'image.
+         * 
+         * @param string $server L'adresse sans slash du serveur (ex: 'images.allocine.fr'), le même paramètre que pour AlloHelper::lang(), ou 'default' pour régler selon le langage enregistré.
+         * @return this
+         */
         
         public function setImageHost( $server )
         {
@@ -1587,11 +1639,12 @@
         
         
         /**
-        * Créer une nouvelle image grâce à son URL.
-        * Si l'url est invalide, l'image utilisée sera celle par défaut.
-        * 
-        * @param string $url=null L'URL de l'image.
-        */
+         * Créer une nouvelle image grâce à son URL.
+         * Si l'url est invalide, l'image utilisée sera celle par défaut.
+         * 
+         * @param string $url=null L'URL de l'image.
+         * @throws ErrorException
+         */
         
         public function __construct( $url = null )
         {
@@ -1661,10 +1714,9 @@
         
         
         /**
-        * Construit l'URL à partir des paramètres enregistrés.
-        * 
-        * @return string
-        */
+         * Construit l'URL à partir des paramètres enregistrés.
+         * @return string
+         */
         
         public function url()
         {
@@ -1687,10 +1739,10 @@
         
         
         /**
-        * Alias de AlloImage::url()
-        * 
-        * @return string
-        */
+         * Alias de AlloImage::url()
+         * 
+         * @return string
+         */
         
         public function __toString()
         {
