@@ -19,7 +19,7 @@
     * 
     * 
     * @licence http://creativecommons.org/licenses/by-nc/2.0/
-    * @author Etienne Gauvin
+    * @author Etienne Gauvin <etiennegauvin41@gmail.com>
     * @version 2.2
     */
     
