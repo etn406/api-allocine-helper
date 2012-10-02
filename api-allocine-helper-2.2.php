@@ -4,7 +4,7 @@
     * API Allociné Helper 2
     * =====================
     * 
-    * Utiliser plus facilement l'API d'Allociné.fr (api.allocine.fr), de Screenrush.co.uk (api.screenrush.co.uk), de Filmstarts.de (api.filmstarts.de), de Beyazperde.com (api.beyazperde.com) ou de Sensacine.com (api.sensacine.com) pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
+    * Utiliser plus facilement l'API d'Allociné.fr, de Screenrush.co.uk, de Filmstarts.de, de Beyazperde.com, de Sensacine.com ou de Adorocinema.com pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
     * Il est possible de supprimer la classe AlloData sans autre modification du code pour éviter son utilisation.
     * 
     * Codes des erreurs:
@@ -53,6 +53,10 @@
     # Sensacine.com, España
     // define( 'ALLO_DEFAULT_URL_API', "api.sensacine.com" );
     // define( 'ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com" );
+    
+    # Adorocinema.com, Brasil
+    // define( 'ALLO_DEFAULT_URL_API', "api.adorocinema.com" );
+    // define( 'ALLO_DEFAULT_URL_IMAGES', "br.web.img1.acsta.net" );
     
     
     /**

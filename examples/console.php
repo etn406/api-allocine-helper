@@ -1,5 +1,5 @@
 <?php
-    require_once "./api-allocine-helper-2.2.php";
+    require_once "../api-allocine-helper-2.2.php";
     
     // Construct the object
     $allohelper = new AlloHelper;

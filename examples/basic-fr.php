@@ -1,6 +1,6 @@
 <?php
     // Charger le fichier.
-    require_once "./api-allocine-helper-2.2.php";
+    require_once "../api-allocine-helper-2.2.php";
     
     // Créer un objet AlloHelper.
     $allohelper = new AlloHelper;
