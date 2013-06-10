@@ -1,24 +1,24 @@
 <?php
     
     /**
-    * API Allociné Helper 2
+    * API AllocinÃ© Helper 2
     * =====================
     * 
-    * Utiliser plus facilement l'API d'Allociné.fr, de Screenrush.co.uk, de Filmstarts.de, de Beyazperde.com, de Sensacine.com ou de Adorocinema.com pour récupérer des informations sur les films, stars, séances, cinés, news, etc...
-    * Il est possible de supprimer la classe AlloData sans autre modification du code pour éviter son utilisation.
+    * Utiliser plus facilement l'API d'AllocinÃ©.fr, de Screenrush.co.uk, de Filmstarts.de, de Beyazperde.com, de Sensacine.com ou de Adorocinema.com pour rÃ©cupÃ©rer des informations sur les films, stars, sÃ©ances, cinÃ©s, news, etc...
+    * Il est possible de supprimer la classe AlloData sans autre modification du code pour Ã©viter son utilisation.
     * 
     * Codes des erreurs:
     * ------------------
-    * 1. Aucune fonction de récupération de données distantes n'est disponible (php_curl|file_get_contents).
-    * 2. Erreur durant la récupération des données sur le serveur d'Allociné.
-    * 3. Erreur durant la conversion des données JSON en array.
-    * 4. Les mots-clés pour la recherche doivent contenir plus d'un caractère.
-    * 5. Allociné a retourné une erreur (Le message de l'erreur est le message de l'ErrorException).
+    * 1. Aucune fonction de rÃ©cupÃ©ration de donnÃ©es distantes n'est disponible (php_curl|file_get_contents).
+    * 2. Erreur durant la rÃ©cupÃ©ration des donnÃ©es sur le serveur d'AllocinÃ©.
+    * 3. Erreur durant la conversion des donnÃ©es JSON en array.
+    * 4. Les mots-clÃ©s pour la recherche doivent contenir plus d'un caractÃ¨re.
+    * 5. AllocinÃ© a retournÃ© une erreur (Le message de l'erreur est le message de l'ErrorException).
     * 6. offset inexistant (Uniquement dans la classe AlloData).
-    * 7. Ce n'est pas un lien vers une image qui a été fournit en paramètre à la méthode __construct() de la classe AlloImage. 
+    * 7. Ce n'est pas un lien vers une image qui a Ã©tÃ© fournit en paramÃ¨tre Ã  la mÃ©thode __construct() de la classe AlloImage. 
     * 
     * 
-    * @licence http://creativecommons.org/licenses/by-nc/2.0/
+    * @licence http://creativecommons.org/licenses/by-sa/3.0/fr/
     * @author Etienne Gauvin <etiennegauvin41@gmail.com>
     * @version 2.2
     */
@@ -28,80 +28,87 @@
     ###################################################################
     
     /**
-    * L'URL de l'API et du serveur des images (par défaut).
-    * The URL of the API and the server images (default).
-    * 
+    * User-agent & secret key
     * @var string
     */
     
-    # Allociné.fr, France
-    define( 'ALLO_DEFAULT_URL_API', "api.allocine.fr" );
-    define( 'ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr" );
+    define('USER_AGENT', 'Dalvik/1.2.0 (Linux; U; Android 2.2.2; Huawei U8800-51 Build/HWU8800B635)');
+    define('ALLOCINE_SECRET_KEY', '29d185d98c984a359e6e6f26a0474269');
+	  
+	  
+    /**
+    * L'URL de l'API et du serveur des images (par dÃ©faut).
+    * The URL of the API and the server images (default).
+    * @var string
+    */
+    
+    # AllocinÃ©.fr, France
+    define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
+    define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
     
     # Screenrush.co.uk, United-Kingdom
-    // define( 'ALLO_DEFAULT_URL_API', "api.screenrush.co.uk" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk" );
+    // define('ALLO_DEFAULT_URL_API', "api.screenrush.co.uk");
+    // define('ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk");
     
-    # Beyazperde.com, Türkiye
-    // define( 'ALLO_DEFAULT_URL_API', "api.beyazperde.com" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "tri.acimg.net" );
+    # Beyazperde.com, TÃ¼rkiye
+    // define('ALLO_DEFAULT_URL_API', "api.beyazperde.com");
+    // define('ALLO_DEFAULT_URL_IMAGES', "tri.acimg.net");
     
     # Filmstarts.de, Deutschland
-    // define( 'ALLO_DEFAULT_URL_API', "api.filmstarts.de" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "bilder.filmstarts.de" );
+    // define('ALLO_DEFAULT_URL_API', "api.filmstarts.de");
+    // define('ALLO_DEFAULT_URL_IMAGES', "bilder.filmstarts.de");
     
-    # Sensacine.com, España
-    // define( 'ALLO_DEFAULT_URL_API', "api.sensacine.com" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com" );
+    # Sensacine.com, EspaÃ±a
+    // define('ALLO_DEFAULT_URL_API', "api.sensacine.com");
+    // define('ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com");
     
     # Adorocinema.com, Brasil
-    // define( 'ALLO_DEFAULT_URL_API', "api.adorocinema.com" );
-    // define( 'ALLO_DEFAULT_URL_IMAGES', "br.web.img1.acsta.net" );
+    // define('ALLO_DEFAULT_URL_API', "api.adorocinema.com");
+    // define('ALLO_DEFAULT_URL_IMAGES', "br.web.img1.acsta.net");
     
     
     /**
-    * Activer/désactiver les Exceptions
+    * Activer/dÃ©sactiver les Exceptions
     * Enable/disable Exceptions
     * 
     * @var bool
     */
     
-    define( 'ALLO_THROW_EXCEPTIONS', false );
+    define('ALLO_THROW_EXCEPTIONS', true);
     
     
     /**
-    * Décoder de l'UTF8 les données réceptionnées
+    * DÃ©coder de l'UTF8 les donnÃ©es rÃ©ceptionnÃ©es
     * Automatically decode the received data from UTF8
     * 
     * @var bool
     */
     
-    define( 'ALLO_UTF8_DECODE', true );
+    define('ALLO_UTF8_DECODE', true);
     
     
     /**
-    * Le partenaire utilisé pour toutes les requêtes.
+    * Le partenaire utilisÃ© pour toutes les requÃªtes.
     * The partner used for all requests.
     * 
     * @var string
     */
     
-    define( 'ALLO_PARTNER', 'YW5kcm9pZC12M3M' );
+    define('ALLO_PARTNER', '100043982026');	
     
     
     ###################################################################
     
     
     /**
-    * Exécuter les requêtes et traiter les données.
-    * 
+    * ExÃ©cuter les requÃªtes et traiter les donnÃ©es.
     */
     
     class AlloHelper
     {
         
         /**
-         * Contient la dernière ErrorException
+         * Contient la derniÃ¨re ErrorException
          * @var ErrorException|null
          */
         
@@ -109,22 +116,22 @@
         
         
         /**
-         * Provoquer une ErrorException et/ou retourne la dernière provoquée.
+         * Provoquer une ErrorException et/ou retourne la derniÃ¨re provoquÃ©e.
          * 
          * @param string $message=null Le message de l'erreur
          * @param int $code=0 Le code de l'erreur
          * @return ErrorException|null
          */
         
-        public static function error( $message = null, $code = 0 )
+        public static function error($message = null, $code = 0)
         {
             if ($message !== null)
             {
-                $error = new ErrorException( $message, $code );
+                $error = new ErrorException($message, $code);
                 
                 self::$_lastError = $error;
                 
-                if ( ALLO_THROW_EXCEPTIONS )
+                if (ALLO_THROW_EXCEPTIONS)
                     throw $error;
             }
             
@@ -133,7 +140,7 @@
         
         
         /**
-         * Contient l'adresse du site où chercher les données.
+         * Contient l'adresse du site oÃ¹ chercher les donnÃ©es.
          * @var string
          */
         
@@ -141,7 +148,7 @@
         
         
         /**
-         * Contient l'adresse du site où chercher les images.
+         * Contient l'adresse du site oÃ¹ chercher les images.
          * @var string
          */
         
@@ -150,17 +157,17 @@
         
         /**
          * Modifier le langage.
-         * Les initiales du langage sont telles que défini dans la liste des codes ISO 639-1.
-         * Le français (fr), l'allemand (de), l'anglais (en), le turque (tr) et l'espagnol (es) sont disponibles.
+         * Les initiales du langage sont telles que dÃ©fini dans la liste des codes ISO 639-1.
+         * Le franÃ§ais (fr), l'allemand (de), l'anglais (en), le turque (tr) et l'espagnol (es) sont disponibles.
          * 
          * @see http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
          * 
          * @param string $lang=null Les initiales du langage.
          */
         
-        public static function lang( $lang = null )
+        public static function lang($lang = null)
         {
-            switch( (string) $lang )
+            switch((string) $lang)
             {
                 case 'de': case 'filmstarts.de':
                     self::$APIUrl = "api.filmstarts.de";
@@ -191,7 +198,7 @@
         
         
         /**
-         * Préréglages pour les paramètres d'URL
+         * PrÃ©rÃ©glages pour les paramÃ¨tres d'URL
 		 * @var array
          */
         
@@ -199,7 +206,7 @@
         
         
         /**
-         * Gestionnaire cURL utilisé pour la prochaine requête.
+         * Gestionnaire cURL utilisÃ© pour la prochaine requÃªte.
          * @var resource
          */
         
@@ -207,20 +214,20 @@
         
         
         /**
-         * Ajouter/modifier des préréglages.
+         * Ajouter/modifier des prÃ©rÃ©glages.
          * 
-         * @param array|string $preset Si c'est un array alors chaque paire "clé" => "valeur" ou "clé=valeur" sera enregistrée dans les préréglages, sinon si c'est une chaîne alors c'est le nom du préréglage et $value est sa valeur.
-         * @param string|array|int $value La valeur du préréglage si $preset est une chaîne de caractères.
+         * @param array|string $preset Si c'est un array alors chaque paire "clÃ©" => "valeur" ou "clÃ©=valeur" sera enregistrÃ©e dans les prÃ©rÃ©glages, sinon si c'est une chaÃ®ne alors c'est le nom du prÃ©rÃ©glage et $value est sa valeur.
+         * @param string|array|int $value La valeur du prÃ©rÃ©glage si $preset est une chaÃ®ne de caractÃ¨res.
          * @return this
          */
         
-        public function set( $preset, $value=null )
+        public function set($preset, $value=null)
         {
-            if (is_array( $preset ))
-                foreach( $preset as $name => $value )
+            if (is_array($preset))
+                foreach($preset as $name => $value)
                     $this->_presets[ (string) $name ] = $value;
             
-            elseif (is_string( $preset ))
+            elseif (is_string($preset))
                 $this->_presets[ $preset ] = $value;
             
             return $this;
@@ -228,13 +235,13 @@
         
         
         /**
-         * Retourne les préréglages.
+         * Retourne les prÃ©rÃ©glages.
          * 
-         * @param string|null $preset=null Indiquer le nom d'un préréglage pour connaître sa valeur.
+         * @param string|null $preset=null Indiquer le nom d'un prÃ©rÃ©glage pour connaÃ®tre sa valeur.
          * @return mixed
          */
         
-        public function getPresets( $preset = null )
+        public function getPresets($preset = null)
         {
             if ($preset === null)
                 return $this->_presets;
@@ -244,14 +251,14 @@
         
         
         /**
-         * Effacer un/des préréglages.
+         * Effacer un/des prÃ©rÃ©glages.
          * 
-         * @param array $presets=array() Indiquer les préréglages à effacer ou laisser vide pour tout effacer.
-         * @param bool $inverse=false Si $inverse vaut true alors tous les préréglages seront effacés sauf ceux indiqués dans $presets.
+         * @param array $presets=array() Indiquer les prÃ©rÃ©glages Ã  effacer ou laisser vide pour tout effacer.
+         * @param bool $inverse=false Si $inverse vaut true alors tous les prÃ©rÃ©glages seront effacÃ©s sauf ceux indiquÃ©s dans $presets.
          * @return this
          */
         
-        public function clearPresets( $presets = array(), $inverse = false )
+        public function clearPresets($presets = array(), $inverse = false)
         {
             if (empty($presets))
                 $this->_presets = array();
@@ -270,42 +277,33 @@
         
         
         /**
-         * Retourne un URL créé à partir de différentes données.
-         * Les paramètres seront ajoutés dans l'ordre, sous leur forme "clé=valeur" ou "valeur" si il n'y a pas de clé.
-         * Si c'est un array les sous éléments seront implosés et séparés par des virgules "clé" => array("val1", "val2", "val3") deviendra "clé=val1,val2,val3"
-         * Les valeurs et les clés ne passent pas par la fonction urlencode !
+         * Retourne un URL crÃ©Ã© Ã  partir de diffÃ©rentes donnÃ©es.
+         * Les paramÃ¨tres seront ajoutÃ©s dans l'ordre, sous leur forme "clÃ©=valeur" ou "valeur" si il n'y a pas de clÃ©.
+         * Si c'est un array les sous Ã©lÃ©ments seront implosÃ©s et sÃ©parÃ©s par des virgules "clÃ©" => array("val1", "val2", "val3") deviendra "clÃ©=val1,val2,val3"
+         * Les valeurs et les clÃ©s ne passent pas par la fonction urlencode !
          * 
-         * @param string $type Le type de données à récupérer (exemple: "rest/v3/movie")
+         * @param string $type Le type de donnÃ©es Ã  rÃ©cupÃ©rer (exemple: "rest/v3/movie")
          */
         
-        protected function creatURL( $type )
+        protected function creatURL($type)
         {
             $this->set(array(
                 'format' => 'json',
-                'partner' => ALLO_PARTNER
+                'partner' => ALLO_PARTNER,
             ));
-            
-            $options_str = array();
-            
-            foreach ($this->getPresets() as $cle => $valeur) {
-                if (is_string($cle))
-                {
-                    if (is_array($valeur))
-                        $options_str[] = "$cle=" . implode(',', $valeur);
-                    
-                    else
-                        $options_str[] = "$cle=" . (string) $valeur;
-                }
-                else
-                    $options_str[] = (string) $valeur;
-            }
-            
-            return "http://". self::$APIUrl ."/$type?".implode('&',(array)$options_str);
+			            
+            $queryURL = ALLO_DEFAULT_URL_API . '/' . $type;
+			      $searchQuery = http_build_query($this->getPresets()) . '&sed=' . date('Ymd');
+			      $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
+			      $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
+			      $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
+			
+			      return $queryURL;
         }
         
         
         /**
-          * Retourne le gestionnaire cURL qui sera utilisé pour la prochaine requête.
+          * Retourne le gestionnaire cURL qui sera utilisÃ© pour la prochaine requÃªte.
           * 
           * @see http://php.net/manual/fr/ref.curl.php
           * @see http://php.net/manual/fr/function.curl-setopt.php
@@ -315,7 +313,7 @@
         
         public function getCURLHandler()
         {
-            if ( function_exists("curl_init") )
+            if (function_exists("curl_init"))
             {
                 if ($this->_cURL === null)
                     return ($this->_cURL = curl_init());
@@ -328,35 +326,39 @@
         
         
         /**
-         * Récupérer des données JSON et les convertir depuis un URL grâce à php_curl, ou à défaut file_get_contents().
+         * RÃ©cupÃ©rer des donnÃ©es JSON et les convertir depuis un URL grÃ¢ce Ã  php_curl, ou Ã  dÃ©faut file_get_contents().
          * 
-         * @param string $url L'URL vers lequel aller chercher les données JSON.
-         * @return array|false Un array contenant les données en cas de succès, false si une erreur est survenue.
+         * @param string $url L'URL vers lequel aller chercher les donnÃ©es JSON.
+         * @return array|false Un array contenant les donnÃ©es en cas de succÃ¨s, false si une erreur est survenue.
          * @throws ErrorException
          */
         
-        protected function getDataFromURL ( $url )
+        protected function getDataFromURL ($url)
         {
-            if ( function_exists("curl_init") )
+            if (function_exists("curl_init"))
             {
-                $curl = ($this->cURL == null) ? curl_init() : $this->_cURL;
-                
+                $curl = ($this->_cURL == null) ? curl_init() : $this->_cURL;
+				
                 curl_setopt ($curl, CURLOPT_URL, $url);
                 curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, 10);
                 curl_setopt ($curl, CURLOPT_RETURNTRANSFER, true);
-                $data = curl_exec($curl);
+				        curl_setopt ($curl, CURLOPT_USERAGENT, USER_AGENT);
+				
+				        $ip = rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255);
+				        
+				        $headers[] = "REMOTE_ADDR: $ip";
+				        $headers[] = "HTTP_X_FORWARDED_FOR: $ip";
+				        
+				        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                        
+				        $data = curl_exec($curl);
                 curl_close($curl);
             }
             
             else
             {
-                if ( !function_exists("file_get_contents") )
-                {
-                    $this->error("The extension php_curl must be installed with PHP or function file_get_contents must be enabled.", 1);
-                    return false;
-                }
-                else
-                    $data = @file_get_contents($url);
+                $this->error("The extension php_curl must be installed with PHP and enabled.", 1);
+                return false;
             }
             
             if (empty($data))
@@ -365,9 +367,10 @@
                 return false;
             }
             
-            $data = @json_decode( $data, 1 );
+            $data = @json_decode($data, 1);
             
-            if (empty($data)) {
+            if (empty($data))
+            {
                 $this->error("An error occurred when converting data.", 3);
                 return false;
             }
@@ -376,195 +379,188 @@
         
         
         /*
-         * Méthodes de récupération des données
+         * MÃ©thodes de rÃ©cupÃ©ration des donnÃ©es
          */
         
         /**
-         * Récupérer les données pour un type de données et un élément du tableau retourné donné.
-         * Utilisé en interne pour diminuer et clarifier le code dans les méthodes ne nécessitant pas de traitement particulier sur leurs données.
+         * RÃ©cupÃ©rer les donnÃ©es pour un type de donnÃ©es et un Ã©lÃ©ment du tableau retournÃ© donnÃ©.
+         * UtilisÃ© en interne pour diminuer et clarifier le code dans les mÃ©thodes ne nÃ©cessitant pas de traitement particulier sur leurs donnÃ©es.
          * 
          * @param string $type Voir AlloHelper::creatURL()
-         * @param string $container L'élément contenant les données dans le tableau retourné par Allociné
+         * @param string $container L'Ã©lÃ©ment contenant les donnÃ©es dans le tableau retournÃ© par AllocinÃ©
          * @return AlloData|array|false
          * @throws ErrorException
          */
         
-        protected function getData( $type, $container, &$url )
+        protected function getData($type, $container, &$url)
         {
-            // Récupération des données
-            $data = $this->getDataFromURL( $url = $this->creatURL( $type ) );
-            
-            // En cas d'erreur
-            if (empty( $data ))
-                return false;
-                
-            // Succès ($data est encore un array)
-            else
-            {
-                if (empty($data['error']))
-                    // On retourne les données
-                    if (class_exists('AlloData'))
-                        return new AlloData( $data[$container] );
-                    else
-                        return $data;
-                
-                // En cas d'erreur signalée par Allociné
-                else
-                {
-                    $this->error( $data['error']['$'], 5 );
-                    return false;
-                }
-            }
-        }
-        
-        /**
-         * Effectuer une recherche sur Allociné.
-         * Possibilité de trier les résultats de films par ressemblance avec la chaîne de recherche.
-         * 
-         * @param string $q La chaîne de recherche.
-         * @param int $page=1 La page des résultats.
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param bool $sortMovies=false Réorganiser ou non les films selon la ressemblance entre leur titre et la chaîne de recherche.
-         * @param array $filter=array() Filtrer les résultats pour gagner en rapidité. Peut-être remplit par "movietheater", "movie", "theater", "person", "news", "tvseries", "location", "character", "video" ou "photo".
-         * @param &$url=null Contiendra l'URL utilisé.
-         * 
-         * @return AlloData|array|false
-         * @throws ErrorException
-         */
-        
-        public function search( $q, $page = 1, $count = 10, $sortMovies = false, array $filter = array(), &$url = null )
-        {
-            
-            // Traitement de la chaîne de recherche
-            if (!is_string($q) || strlen($q) < 2 )
-            {
-                $this->error( "The keywords should contain more than one character.", 4 );
-                return false;
-            }
-            
-            $accents = "àáâãäçèéêëìíîïñòóôõöùúûüıÿ'";
-            $normal  = 'aaaaaceeeeiiiinooooouuuuyy ';
-            $q = utf8_encode(strtr(strtolower(trim($q)), $accents, $normal));
-            
-            // Préréglages
-            $this->set(array(
-                'q' => urlencode($q),
-                'filter' => (array) $filter,
-                'count' => (int) $count,
-                'page' => (int) $page
-            ));
-            
-            // Création de l'URL
-            $url = $this->creatURL( 'rest/v3/search' );
-            
-            // Envoi de la requête
-            $data = $this->getDataFromURL( $url );
+            // RÃ©cupÃ©ration des donnÃ©es
+            $data = $this->getDataFromURL($url = $this->creatURL($type));
             
             // En cas d'erreur
             if (empty($data))
                 return false;
                 
-            // Succès ($data est encore un array)
+            // SuccÃ¨s ($data est encore un array)
             else
             {
                 if (empty($data['error']))
-                {
-                    $data = $data['feed'];
-                    
-                    if (!empty($data['movie']))
-                    {
-                        foreach ($data['movie'] as $iresult => &$result)
-                        {
-                            $result['productionYear'] = (int) @$result['productionYear'];
-                            $result['originalTitle'] = (string) @$result['originalTitle'];
-                            
-                            if (empty($result['title']))
-                                $result['title'] = @$result['originalTitle'];
-                            
-                            $result['release'] = (array) @$result['release'];
-                            $result['release']['releaseDate'] = (string) @$result['release']['releaseDate'];
-                            
-                            $result['statistics'] = (array) @$result['statistics'];
-                            $result['statistics']['pressRating'] = (float) @$result['statistics']['pressRating'];
-                            $result['statistics']['userRating'] = (float) @$result['statistics']['userRating'];
-                            
-                            $result['castingShort'] = (array) @$result['castingShort'];
-                            $result['castingShort']['directors'] = (string) @$result['castingShort']['directors'];
-                            $result['castingShort']['actors'] = (string) @$result['castingShort']['actors'];
-                            
-                            if (!empty($result['poster']['href']))
-                                $result['poster'] = new AlloImage($result['poster']['href']);
-                            else
-                                $result['poster'] = new AlloImage();
-                            
-                            $result['posterURL'] = $result['poster']->url();
-                            $result['link'] = (array) @$result['link'];
-                        }
-                    }
-                    
-                    // Réorganisation des films
-                    if ($sortMovies && !empty($data['movie']))
-                    {
-                        $movies = &$data['movie'];
-                        $resultats = array();
-                        
-                        // Tableau contenant $cleFilm => $similitude
-                        $similitudes = array();
-                        
-                        // Oncalcule la distance de levenstein entre la chaîne de recherche et le titre pour chaque film
-                        foreach ($movies as $i => &$m)
-                            $similitudes[$i] = levenshtein($q, strtr(strtolower($m['title']), $accents, $normal));
-                        
-                        // On réorganise le tableau des similitudes, mais en gardant les clés.
-                        asort($similitudes, true);
-                        
-                        // On remplit le tableau des résultats dans l'ordre des similitudes.
-                        foreach ($similitudes as $i => $sim)
-                            $resultats[] = $movies[$i];
-                        
-                        
-                        $data['movieSorted'] = $resultats;
-                        $data['movie'] = $movies;
-                    }
-                    
-                    // Réorganisation des compteurs des résultats
-                    if (!empty($data['results']))
-                    {
-                        foreach ($data['results'] as $r)
-                            $data['results'][$r['type']] = (int) $r['$'];
-                    }
-                    
-                    // On retourne les données
+                    // On retourne les donnÃ©es
                     if (class_exists('AlloData'))
-                        return new AlloData( $data );
+                        return new AlloData($data[$container]);
                     else
                         return $data;
-                }
                 
-                // En cas d'erreur signalée par Allociné
+                // En cas d'erreur signalÃ©e par AllocinÃ©
                 else
                 {
-                    $this->error( $data['error']['$'], 5 );
+                    $this->error($data['error']['$'], 5);
                     return false;
                 }
             }
         }
         
+        /**
+         * Effectuer une recherche sur AllocinÃ©.
+         * PossibilitÃ© de trier les rÃ©sultats de films par ressemblance avec la chaÃ®ne de recherche.
+         * 
+         * @param string $q La chaÃ®ne de recherche.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param bool $sortMovies=false RÃ©organiser ou non les films selon la ressemblance entre leur titre et la chaÃ®ne de recherche.
+         * @param array $filter=array() Filtrer les rÃ©sultats pour gagner en rapiditÃ©. Peut-Ãªtre remplit par "movietheater", "movie", "theater", "person", "news", "tvseries", "location", "character", "video" ou "photo".
+         * @param &$url=null Contiendra l'URL utilisÃ©.
+         * 
+         * @return AlloData|array|false
+         * @throws ErrorException
+         */
+        
+        public function search($q, $page = 1, $count = 10, $sortMovies = false, array $filter = array(), &$url = null)
+        {
+            
+            // Traitement de la chaÃ®ne de recherche
+            if (!is_string($q) || strlen($q) < 2)
+            {
+                $this->error("The keywords should contain more than one character.", 4);
+                return false;
+            }
+            
+            $accents = "Ã Ã¡Ã¢Ã£Ã¤Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã±Ã²Ã³Ã´ÃµÃ¶Ã¹ÃºÃ»Ã¼Ã½Ã¿'";
+            $normal  = 'aaaaaceeeeiiiinooooouuuuyy ';
+            $q = utf8_encode(strtr(strtolower(trim($q)), $accents, $normal));
+            
+            // PrÃ©rÃ©glages
+            $this->set(array(
+                'q' => urlencode($q),
+                'filter' => (array) $filter,
+                'count' => (int) $count,
+                'page' => (int) $page
+           ));
+            
+            // CrÃ©ation de l'URL
+            $url = $this->creatURL('rest/v3/search');
+            
+            // Envoi de la requÃªte
+            $data = $this->getDataFromURL($url);
+            
+            // En cas d'erreur
+            if (empty($data['error']))
+            {
+                $data = $data['feed'];
+                
+                if (!empty($data['movie']))
+                {
+                    foreach ($data['movie'] as $iresult => &$result)
+                    {
+                        $result['productionYear'] = (int) @$result['productionYear'];
+                        $result['originalTitle'] = (string) @$result['originalTitle'];
+                        
+                        if (empty($result['title']))
+                            $result['title'] = @$result['originalTitle'];
+                        
+                        $result['release'] = (array) @$result['release'];
+                        $result['release']['releaseDate'] = (string) @$result['release']['releaseDate'];
+                        
+                        $result['statistics'] = (array) @$result['statistics'];
+                        $result['statistics']['pressRating'] = (float) @$result['statistics']['pressRating'];
+                        $result['statistics']['userRating'] = (float) @$result['statistics']['userRating'];
+                        
+                        $result['castingShort'] = (array) @$result['castingShort'];
+                        $result['castingShort']['directors'] = (string) @$result['castingShort']['directors'];
+                        $result['castingShort']['actors'] = (string) @$result['castingShort']['actors'];
+                        
+                        if (!empty($result['poster']['href']))
+                            $result['poster'] = new AlloImage($result['poster']['href']);
+                        else
+                            $result['poster'] = new AlloImage();
+                        
+                        $result['posterURL'] = $result['poster']->url();
+                        $result['link'] = (array) @$result['link'];
+                    }
+                }
+                
+                // RÃ©organisation des films
+                if ($sortMovies && !empty($data['movie']))
+                {
+                    $movies = &$data['movie'];
+                    $resultats = array();
+                    
+                    // Tableau contenant $cleFilm => $similitude
+                    $similitudes = array();
+                    
+                    // Oncalcule la distance de levenstein entre la chaÃ®ne de recherche et le titre pour chaque film
+                    foreach ($movies as $i => &$m)
+                        $similitudes[$i] = levenshtein($q, strtr(strtolower($m['title']), $accents, $normal));
+                    
+                    // On rÃ©organise le tableau des similitudes, mais en gardant les clÃ©s.
+                    asort($similitudes, true);
+                    
+                    // On remplit le tableau des rÃ©sultats dans l'ordre des similitudes.
+                    foreach ($similitudes as $i => $sim)
+                        $resultats[] = $movies[$i];
+                    
+                    
+                    $data['movieSorted'] = $resultats;
+                    $data['movie'] = $movies;
+                }
+                
+                // RÃ©organisation des compteurs des rÃ©sultats
+                if (!empty($data['results']))
+                {
+                    foreach ($data['results'] as $r)
+                        $data['results'][$r['type']] = (int) $r['$'];
+                }
+                
+                // On retourne les donnÃ©es
+                if (class_exists('AlloData'))
+                    return new AlloData($data);
+                else
+                    return $data;
+            }
+            
+            // En cas d'erreur signalÃ©e par AllocinÃ©
+            else
+            {
+                $this->error($data['error']['$'], 5);
+                return false;
+            }
+        }
+        
         
         /**
-         * Récupérer les critiques des spectateurs et de la presse à propos d'un film, d'une série TV.
+         * RÃ©cupÃ©rer les critiques des spectateurs et de la presse Ã  propos d'un film, d'une sÃ©rie TV.
          * 
-         * @param int $code L'identifiant du film/de la série.
-         * @param string $filter='press' Le type de critique ('press' ou 'public') à renvoyer.
-         * @param string $type='movie' Le type de données ("movie" ou "tvseries") auquel faire correspondre l'identifiant $code.
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param int $page=1 La page des résultats.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $code L'identifiant du film/de la sÃ©rie.
+         * @param string $filter='press' Le type de critique ('press' ou 'public') Ã  renvoyer.
+         * @param string $type='movie' Le type de donnÃ©es ("movie" ou "tvseries") auquel faire correspondre l'identifiant $code.
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function reviewlist( $code, $filter='press', $type='movie', $count = 10, $page = 1, &$url = null )
+        public function reviewlist($code, $filter='press', $type='movie', $count = 10, $page = 1, &$url = null)
         {
             // Type de critiques (presse/public)
             switch ($filter)
@@ -577,63 +573,63 @@
                 $filter = 'public';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => $code,
                 'filter' => (array) $filter,
                 'type' => (string) $type,
                 'count' => (int) $count,
                 'page' => (int) $page
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/reviewlist', 'feed', $url);
         }
         
         
         /**
-         * Récupérer une liste de films en fonction de différents paramètres.
+         * RÃ©cupÃ©rer une liste de films en fonction de diffÃ©rents paramÃ¨tres.
          * 
-         * @param string $filter='nowshowing' Le type de résultats à afficher: 'nowshowing' (films au cinéma) ou 'comingsoon' (bientôt au cinéma);
-         * @param string $order='dateasc' L'ordre dans lequel afficher les données: 'dateasc' (chronologique), 'datedesc' (anti-chronologique), 'theatercount' (nombre de salles) ou 'toprank' (popularité).
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param int $page=1 La page des résultats.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param string $filter='nowshowing' Le type de rÃ©sultats Ã  afficher: 'nowshowing' (films au cinÃ©ma) ou 'comingsoon' (bientÃ´t au cinÃ©ma);
+         * @param string $order='dateasc' L'ordre dans lequel afficher les donnÃ©es: 'dateasc' (chronologique), 'datedesc' (anti-chronologique), 'theatercount' (nombre de salles) ou 'toprank' (popularitÃ©).
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function movielist( $filter=array('nowshowing'), $order=array('dateasc'), $count = 10, $page = 1, &$url = null )
+        public function movielist($filter=array('nowshowing'), $order=array('dateasc'), $count = 10, $page = 1, &$url = null)
         {
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'filter' => (array) $filter,
                 'order' => (array) $order,
                 'count' => (int) $count,
                 'page' => (int) $page
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/movielist', 'feed', $url);
         }
         
         
         /**
-         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un code postal.
+         * RÃ©cupÃ©rer une liste de cinÃ©mas et la liste des films qui y passent actuellement en fonction d'un code postal.
          * 
-         * @param mixed $zip Le code postal de la ville du/des cinéma(s).
-         * @param $date=null Spécifier une date pour les horaires.
-         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param int $page=1 La page des résultats.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param mixed $zip Le code postal de la ville du/des cinÃ©ma(s).
+         * @param $date=null SpÃ©cifier une date pour les horaires.
+         * @param $movieCode=null SpÃ©cifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function showtimesByZip( $zip, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
+        public function showtimesByZip($zip, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null)
         {
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set('zip', $zip);
             $this->set('count', (int) $count);
             $this->set('page', (int) $page);
@@ -644,30 +640,30 @@
             if ($movieCode !== null)
                 $this->set('movie', $movieCode);
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/showtimelist', 'feed', $url);
         }
         
         
         
         /**
-         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction de coordonnées géographiques (latitude, longitude [, rayon]).
+         * RÃ©cupÃ©rer une liste de cinÃ©mas et la liste des films qui y passent actuellement en fonction de coordonnÃ©es gÃ©ographiques (latitude, longitude [, rayon]).
          * 
-         * @param float $lat La coordonnée latitude du cinéma.
-         * @param float $long La coordonnée longitude du cinéma.
+         * @param float $lat La coordonnÃ©e latitude du cinÃ©ma.
+         * @param float $long La coordonnÃ©e longitude du cinÃ©ma.
          * @param int $radius Le rayon dans lequel chercher.
-         * @param $date=null Spécifier une date pour les horaires.
-         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param int $page=1 La page des résultats.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param $date=null SpÃ©cifier une date pour les horaires.
+         * @param $movieCode=null SpÃ©cifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function showtimesByPosition( $lat, $long, $radius=10, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
+        public function showtimesByPosition($lat, $long, $radius=10, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null)
         {
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set('lat', (float) $lat);
             $this->set('long', (float) $long);
             $this->set('radius', (int) $radius);
@@ -680,28 +676,28 @@
             if ($movieCode !== null)
                 $this->set('movie', $movieCode);
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/showtimelist', 'feed', $url);
         }
         
         
         
         /**
-         * Récupérer une liste de cinémas et la liste des films qui y passent actuellement en fonction d'un ou de plusieurs identifiant(s) de cinéma(s);
+         * RÃ©cupÃ©rer une liste de cinÃ©mas et la liste des films qui y passent actuellement en fonction d'un ou de plusieurs identifiant(s) de cinÃ©ma(s);
          * 
-         * @param array|string $theaters Un identifiant/une liste d'identifiants de cinéma(s).
-         * @param $date=null Spécifier une date pour les horaires.
-         * @param $movieCode=null Spécifier les horaires d'un film (par identifiant).
-         * @param int $count=10 Le nombre maximum de résultats par page.
-         * @param int $page=1 La page des résultats.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param array|string $theaters Un identifiant/une liste d'identifiants de cinÃ©ma(s).
+         * @param $date=null SpÃ©cifier une date pour les horaires.
+         * @param $movieCode=null SpÃ©cifier les horaires d'un film (par identifiant).
+         * @param int $count=10 Le nombre maximum de rÃ©sultats par page.
+         * @param int $page=1 La page des rÃ©sultats.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function showtimesByTheaters( $theaters, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null )
+        public function showtimesByTheaters($theaters, $date=null, $movieCode=null, $count = 10, $page = 1, &$url = null)
         {
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set('theaters', (array) $theaters);
             $this->set('count', (int) $count);
             $this->set('page', (int) $page);
@@ -712,25 +708,25 @@
             if ($movieCode !== null)
                 $this->set('movie', $movieCode);
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/showtimelist', 'feed', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur un film.
+         * RÃ©cupÃ©rer toutes les informations sur un film.
          * 
          * @param int $code L'identifiant du film.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          * @throws ErrorException
          */
         
-        public function movie( $code, $profile = 'medium', &$url = null )
+        public function movie($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -741,23 +737,23 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Création de l'URL
-            $url = $this->creatURL( 'rest/v3/movie' );
+            // CrÃ©ation de l'URL
+            $url = $this->creatURL('rest/v3/movie');
             
-            // Envoi de la requête
-            $data = $this->getDataFromURL( $url );
+            // Envoi de la requÃªte
+            $data = $this->getDataFromURL($url);
             
             // En cas d'erreur
             if (empty($data))
                 return false;
                 
-            // Succès ($data est encore un array)
+            // SuccÃ¨s ($data est encore un array)
             else
             {
                 if (empty($data['error']))
@@ -768,17 +764,17 @@
                     if (empty($data['title']))
                         $data['title'] = $data['originalTitle'];
                     
-                    // On retourne les données
+                    // On retourne les donnÃ©es
                     if (class_exists('AlloData'))
-                        return new AlloData( $data );
+                        return new AlloData($data);
                     else
                         return $data;
                 }
                 
-                // En cas d'erreur signalée par Allociné
+                // En cas d'erreur signalÃ©e par AllocinÃ©
                 else
                 {
-                    $this->error( $data['error']['$'], 5 );
+                    $this->error($data['error']['$'], 5);
                     return false;
                 }
             }
@@ -786,18 +782,18 @@
         
         
         /**
-         * Récupérer toutes les informations sur un article.
+         * RÃ©cupÃ©rer toutes les informations sur un article.
          * 
          * @param int $code L'identifiant de l'article.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function news( $code, $profile = 'medium', &$url = null )
+        public function news($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -808,30 +804,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/news', 'news', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur une personne.
+         * RÃ©cupÃ©rer toutes les informations sur une personne.
          * 
          * @param int $code L'identifiant de la personne.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function person( $code, $profile = 'medium', &$url = null )
+        public function person($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -842,30 +838,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/person', 'person', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur un media (vidéo/photo).
+         * RÃ©cupÃ©rer toutes les informations sur un media (vidÃ©o/photo).
          * 
          * @param int $code L'identifiant du media.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function media( $code, $profile = 'medium', &$url = null )
+        public function media($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -876,30 +872,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/media', 'media', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur la filmographie d'une personne.
+         * RÃ©cupÃ©rer toutes les informations sur la filmographie d'une personne.
          * 
          * @param int $code L'identifiant de la personne.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function filmography( $code, $profile = 'medium', &$url = null )
+        public function filmography($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -910,30 +906,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/filmography', 'person', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur une série TV.
+         * RÃ©cupÃ©rer toutes les informations sur une sÃ©rie TV.
          * 
-         * @param int $code L'identifiant de la série TV.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $code L'identifiant de la sÃ©rie TV.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function tvserie( $code, $profile = 'medium', &$url = null )
+        public function tvserie($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -944,30 +940,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/tvseries', 'tvseries', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur une saison d'une série TV.
+         * RÃ©cupÃ©rer toutes les informations sur une saison d'une sÃ©rie TV.
          * 
          * @param int $code L'identifiant de la saison.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function season( $code, $profile = 'medium', &$url = null )
+        public function season($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -978,30 +974,30 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/season', 'season', $url);
         }
         
         
         /**
-         * Récupérer toutes les informations sur un épisode d'une saison d'une série TV.
+         * RÃ©cupÃ©rer toutes les informations sur un Ã©pisode d'une saison d'une sÃ©rie TV.
          * 
-         * @param int $code L'identifiant de l'épisode.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
-         * @param &$url Contiendra l'URL utilisé.
+         * @param int $code L'identifiant de l'Ã©pisode.
+         * @param int $profile='medium' La quantitÃ© d'informations Ã  renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param &$url Contiendra l'URL utilisÃ©.
          * 
          * @return AlloData|array|false
          */
         
-        public function episode( $code, $profile = 'medium', &$url = null )
+        public function episode($code, $profile = 'medium', &$url = null)
         {
-            // Profile (quantité d'informations)
+            // Profile (quantitÃ© d'informations)
             switch($profile)
             {
                 case 'small': break;
@@ -1012,13 +1008,13 @@
                 case 3: $profile = 'large';
             }
             
-            // Préréglages
+            // PrÃ©rÃ©glages
             $this->set(array(
                 'code' => (int) $code,
                 'profile' => (string) $profile,
-            ));
+           ));
             
-            // Récupération et revoi des données
+            // RÃ©cupÃ©ration et revoi des donnÃ©es
             return $this->getData('rest/v3/episode', 'episode', $url);
         }
         
@@ -1026,8 +1022,8 @@
     
     
     /**
-    * Manipuler facilement les données reçues.
-    * Il est possible de supprimer complètement cette classe sans autre modification du code.
+    * Manipuler facilement les donnÃ©es reÃ§ues.
+    * Il est possible de supprimer complÃ¨tement cette classe sans autre modification du code.
     * 
     * @implements ArrayAccess, SeekableIterator, Countable
     */
@@ -1036,7 +1032,7 @@
     {
         
         /**
-         * Contiendra les données
+         * Contiendra les donnÃ©es
          * @var array
          */
         
@@ -1051,18 +1047,18 @@
         
         
         /**
-         * Décoder une variable depuis l'UTF8.
+         * DÃ©coder une variable depuis l'UTF8.
          * 
-         * @param mixed $var Seules les chaînes sont décodées, mais aucune erreur ne sera provoquée si ce n'en est pas une.
-         * @param mixed $tab=false Si ce paramètre vaut true alors le tableau sera parcouru de manière récursive et toutes les chaînes de caractèrezs seront converties.
-         * @return array|string Le tableau|la chaîne décodé(e)
+         * @param mixed $var Seules les chaÃ®nes sont dÃ©codÃ©es, mais aucune erreur ne sera provoquÃ©e si ce n'en est pas une.
+         * @param mixed $tab=false Si ce paramÃ¨tre vaut true alors le tableau sera parcouru de maniÃ¨re rÃ©cursive et toutes les chaÃ®nes de caractÃ¨rezs seront converties.
+         * @return array|string Le tableau|la chaÃ®ne dÃ©codÃ©(e)
          */
         
-        public static function utf8_decode( $var, $tab = false )
+        public static function utf8_decode($var, $tab = false)
         {
             if (ALLO_UTF8_DECODE)
             {
-                if (is_string($var)) return utf8_decode(str_replace('â€™', "'", $var));
+                if (is_string($var)) return utf8_decode(str_replace('Ã¢â‚¬â„¢', "'", $var));
                 elseif (!is_array($var) || !$tab) return $var;
                 else
                 {
@@ -1081,34 +1077,34 @@
          * Constructeur
          */
         
-        public function __construct( $data )
+        public function __construct($data)
         {
             $this->_data = (array) $data;
         }
         
         
         /**
-         * Retourne un pointeur sur une valeur existante dans les données enregistrées, ou null si elle n'existe pas.
+         * Retourne un pointeur sur une valeur existante dans les donnÃ©es enregistrÃ©es, ou null si elle n'existe pas.
          * 
          * @param $offset=null Retourne un pointeur sur tout le tableau si $offset==null
-         * @return Une référence vers la valeur demandée, ou null si elle n'existe pas.
+         * @return Une rÃ©fÃ©rence vers la valeur demandÃ©e, ou null si elle n'existe pas.
          * @throws ErrorException
          */
         
-        protected function &_getProperty( $offset = null, $ignoreException = false )
+        protected function &_getProperty($offset = null, $ignoreException = false)
         {
             $data = &$this->_data;
             
-            if ( $offset === null )
+            if ($offset === null)
                 return $data;
             
             else
             {
-                if (isset( $data[$offset] ))
+                if (isset($data[$offset]))
                     return $data[$offset];
                 
                 
-                elseif ( $offset == self::REPLACEMENT_OF_DOLLAR_SIGN && isset($data['$']) )
+                elseif ($offset == self::REPLACEMENT_OF_DOLLAR_SIGN && isset($data['$']))
                     return $data['$'];
                 
                 else
@@ -1116,7 +1112,7 @@
                     if (!$ignoreException)
                         AlloHelper::error("This offset ($offset) does not exist.", 6);
                     
-                    // Eviter une erreur en retournant une référence, si les exceptions sont désactivées.
+                    // Eviter une erreur en retournant une rÃ©fÃ©rence, si les exceptions sont dÃ©sactivÃ©es.
                     $b = null;
                     $a =&$b;
                     
@@ -1126,7 +1122,7 @@
         }
         
         /**
-         * Retourne les données sous forme d'un array
+         * Retourne les donnÃ©es sous forme d'un array
          * 
          */
         
@@ -1137,25 +1133,25 @@
         
         
         /**
-         * Si l'on essaie d'accéder à une propriété inexistante (donc un élément de $this->_data)
+         * Si l'on essaie d'accÃ©der Ã  une propriÃ©tÃ© inexistante (donc un Ã©lÃ©ment de $this->_data)
          * 
          */
         
-        public function __get( $offset )
+        public function __get($offset)
         {
             $data = $this->_getProperty($offset);
             if (is_array($data))
-                return new AlloData( $data );
+                return new AlloData($data);
             else return self::utf8_decode($data);
         }
         
         
         /**
-         * Impossible de créer/modifier une propriété
+         * Impossible de crÃ©er/modifier une propriÃ©tÃ©
          * 
          */
         
-        public function __set( $offset, $value )
+        public function __set($offset, $value)
         {
             $data = &$this->_getProperty($offset);
             $data = $value;
@@ -1163,7 +1159,7 @@
         
         
         /*
-         * Implémentation des interfaces
+         * ImplÃ©mentation des interfaces
          */
         
         /**
@@ -1177,19 +1173,19 @@
          * Retourne la valeur de l'index courant.
          */
         
-        public function current( )
+        public function current()
         {
             $data = $this->_getProperty($this->_position);
             if (is_array($data))
-                return new AlloData( $data );
+                return new AlloData($data);
             else return self::utf8_decode($data);
         }
         
         /**
-         * Retourne true ou false selon l'existence ou non d'une occurence dans les données.
+         * Retourne true ou false selon l'existence ou non d'une occurence dans les donnÃ©es.
          */
         
-        public function valid( )
+        public function valid()
         {
             return ($this->_getProperty($this->_position, true) !== null);
         }
@@ -1198,26 +1194,26 @@
          * Retourne la position actuelle.
          */
         
-        public function key( )
+        public function key()
         {
             return $this->_position;
         }
         
         /**
-         * Incrémente l'index.
+         * IncrÃ©mente l'index.
          */
         
-        public function next( )
+        public function next()
         {
             $this->_position++;
         }
         
         
         /**
-         * Réinitialise l'index.
+         * RÃ©initialise l'index.
          */
         
-        public function rewind( )
+        public function rewind()
         {
             $this->_position = 0;
         }
@@ -1230,7 +1226,7 @@
          * @throws ErrorException
          */
         
-        public function seek( $newPosition )
+        public function seek($newPosition)
         {
             $lastPosition = $this->_position;
             $this->_position = $newPosition;
@@ -1255,29 +1251,29 @@
         }
         
         /**
-         * Si l'on essaie d'accéder à l'objet comme à un tableau.
+         * Si l'on essaie d'accÃ©der Ã  l'objet comme Ã  un tableau.
          * 
          * @param string|int $offset
          * @return mixed
          */
         
-        public function offsetGet( $offset )
+        public function offsetGet($offset)
         {
             $data = $this->_getProperty($offset);
             if (is_array($data))
-                return new AlloData( $data );
+                return new AlloData($data);
             else return self::utf8_decode($data);
         }
         
         
         /**
-         * Si l'on veut de créer/modifier une propriété (interface ArrayAccess)
+         * Si l'on veut de crÃ©er/modifier une propriÃ©tÃ© (interface ArrayAccess)
          * 
          * @param string|int $offset
          * @param mixed $value
          */
         
-        public function offsetSet( $offset, $value )
+        public function offsetSet($offset, $value)
         {
             $data = &$this->_getProperty($offset);
             $data = $value;
@@ -1285,21 +1281,21 @@
         
         
         /**
-         * Lors de la vérification de l'existence d'une propriété avec isset (interface ArrayAccess)
+         * Lors de la vÃ©rification de l'existence d'une propriÃ©tÃ© avec isset (interface ArrayAccess)
          * 
          * @param string|int $offset
          * @return bool
          */
         
-        public function offsetExists( $offset )
+        public function offsetExists($offset)
         {
             return ($this->_getProperty($this->_position, true) !== null);
         }
         
         
         /**
-         * Il n'est pas possible de détruire une la variable référencée, seule la référence est détruite...
-         * De toute façon ça n'a pas d'utilité.
+         * Il n'est pas possible de dÃ©truire une la variable rÃ©fÃ©rencÃ©e, seule la rÃ©fÃ©rence est dÃ©truite...
+         * De toute faÃ§on Ã§a n'a pas d'utilitÃ©.
          */
         
         public function offsetUnset($offset)
@@ -1312,38 +1308,38 @@
          * Coller toutes les valeurs/sous-valeurs du tableau associatif.
          * Exemple : $film->genre->implode() collera toutes les valeurs de $film->genre[i]->value avec des virgules.
          * 
-         * @param string $separator=', '         Le séparateur des valeurs.
-         * @param string $lastSeparator=' et '   Le séparateur des dernière et l'avant-dernière valeurs.
-         * @param string $offset='value'         Les offsets à concaténer ('$' == 'value').
+         * @param string $separator=', '         Le sÃ©parateur des valeurs.
+         * @param string $lastSeparator=' et '   Le sÃ©parateur des derniÃ¨re et l'avant-derniÃ¨re valeurs.
+         * @param string $offset='value'         Les offsets Ã  concatÃ©ner ('$' == 'value').
          * @return string
          */
         
-        public function implode( $separator = ', ', $lastSeparator = ' & ', $offset = 'value' )
+        public function implode($separator = ', ', $lastSeparator = ' & ', $offset = 'value')
         {
             $tab = (array) $this->_getProperty();
             
-            if ( count($tab) === 1 )
+            if (count($tab) === 1)
             {
                 $data = new AlloData($tab[0]);
-                if ( isset($data[$offset]) && is_string($data[$offset]) )
+                if (isset($data[$offset]) && is_string($data[$offset]))
                     return $data[$offset];
             }
             
-            elseif ( count($tab) < 1 )   return '';
+            elseif (count($tab) < 1)   return '';
             
             $values = array();
             
-            foreach ( $tab as $i => $stab )
+            foreach ($tab as $i => $stab)
             {
-                $data = new AlloData( $stab );
-                if ( isset($data[$offset]) && is_string($data[$offset]) )
+                $data = new AlloData($stab);
+                if (isset($data[$offset]) && is_string($data[$offset]))
                     $values[] = $data[$offset];
             }
             
             $last = array_slice($values, -1, 1);
             
-            if ( $values )
-                return implode( (string) $separator, array_slice( $values, 0, -1 ) ) . (( count($values) > 1 ) ? (string) $lastSeparator . $last[0] : '' );
+            if ($values)
+                return implode((string) $separator, array_slice($values, 0, -1)) . ((count($values) > 1) ? (string) $lastSeparator . $last[0] : '');
             else
                 return '';
         }
@@ -1360,7 +1356,7 @@
     {
         
         /**
-         * Répertoire de l'image par défaut
+         * RÃ©pertoire de l'image par dÃ©faut
          * @const string
          */
         
@@ -1368,7 +1364,7 @@
         
         
         /**
-         * Liste des icônes diponibles
+         * Liste des icÃ´nes diponibles
          * @var array
          */
         
@@ -1376,11 +1372,11 @@
             'play.png' => null,
             'overplay.png' => null,
             'overlayVod120.png' => array('r', 120, 160),
-        );
+       );
         
         
         /**
-         * Contient les paramètres de l'icône.
+         * Contient les paramÃ¨tres de l'icÃ´ne.
          * @var array|false
          */
         
@@ -1388,7 +1384,7 @@
         
         
         /**
-         * Contient les paramètres de la bordure
+         * Contient les paramÃ¨tres de la bordure
          * @var array|false
          */
         
@@ -1396,7 +1392,7 @@
         
         
         /**
-         * Contient les paramètres de la taille de l'image.
+         * Contient les paramÃ¨tres de la taille de l'image.
          * @var array|false
          */
         
@@ -1412,7 +1408,7 @@
         
         
         /**
-         * Contient le répertoire de l'image sur Allociné.
+         * Contient le rÃ©pertoire de l'image sur AllocinÃ©.
          * @var string
          */
         
@@ -1420,12 +1416,12 @@
         
         
         /**
-         * Image par défaut
+         * Image par dÃ©faut
          * 
          * @return this
          */
         
-        public function reset( )
+        public function reset()
         {
             $this->destroyBorder();
             $this->destroyIcon();
@@ -1435,15 +1431,15 @@
         }
         
         /**
-         * Modifier l'icône sur l'image.
+         * Modifier l'icÃ´ne sur l'image.
          * 
-         * @param string $position='c' La position de l'icône par rapport au centre de l'image (en une ou deux lettres), d'après la rose des sable. Renseigner une position invalide (telle que 'c') pour centrer l'icône.
-         * @param int $margin=4 Le nombre de pixel entre l'icône et le(s) bord(s) le(s) plus proche(s).
-         * @param string $icon='play.png' Le nom de l'icône à ajouter. La liste des icônes se trouve dans AlloImage::$icons.
+         * @param string $position='c' La position de l'icÃ´ne par rapport au centre de l'image (en une ou deux lettres), d'aprÃ¨s la rose des sable. Renseigner une position invalide (telle que 'c') pour centrer l'icÃ´ne.
+         * @param int $margin=4 Le nombre de pixel entre l'icÃ´ne et le(s) bord(s) le(s) plus proche(s).
+         * @param string $icon='play.png' Le nom de l'icÃ´ne Ã  ajouter. La liste des icÃ´nes se trouve dans AlloImage::$icons.
          * @return this
          */
         
-        public function icon( $position='c', $margin=4, $icon='play.png' )
+        public function icon($position='c', $margin=4, $icon='play.png')
         {
             if (!empty($this->icons[$icon]))
             {
@@ -1460,14 +1456,14 @@
                 'position' => substr($position, 0, 2),
                 'margin' => (int) $margin,
                 'icon' => (string) $icon
-            );
+           );
             
             return $this;
         }
         
         
         /**
-         * Renvoie les paramètres enregistrés pour l'icône.
+         * Renvoie les paramÃ¨tres enregistrÃ©s pour l'icÃ´ne.
          * 
          * @return array|false
          */
@@ -1479,7 +1475,7 @@
         
         
         /**
-         * Efface les paramètres enregistrés pour l'icône.
+         * Efface les paramÃ¨tres enregistrÃ©s pour l'icÃ´ne.
          * 
          * @return this
          */
@@ -1494,24 +1490,24 @@
         /**
          * Modifier la bordure de l'image.
          * 
-         * @param int $size=1 L'épaisseur de la bordure en pixels.
-         * @param string $color='000000' La couleur de la bordure en hexadécimal (sans # initial). [http://en.wikipedia.org/wiki/Web_colors#Hex_triplet]
+         * @param int $size=1 L'Ã©paisseur de la bordure en pixels.
+         * @param string $color='000000' La couleur de la bordure en hexadÃ©cimal (sans # initial). [http://en.wikipedia.org/wiki/Web_colors#Hex_triplet]
          * @return this
          */
         
-        public function border( $size=1, $color="000000" )
+        public function border($size=1, $color="000000")
         {
             $this->imageBorder = array(
                 'size' => (int) $size,
                 'color' => (string) $color
-            );
+           );
             
             return $this;
         }
         
         
         /**
-         * Renvoie les paramètres enregistrés de la bordure.
+         * Renvoie les paramÃ¨tres enregistrÃ©s de la bordure.
          * 
          * @return array|false
          */
@@ -1537,21 +1533,21 @@
         
         /**
          * Modifier proportionnellement la taille de l'image au plus petit.
-         * Si les deux paramètres sont laissés tels quels ($xmax='x' et $ymax='y'), l'image sera de taille normale.
-         * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::cut() (Les deux méthodes ne peuvent être utilisées en même temps).
+         * Si les deux paramÃ¨tres sont laissÃ©s tels quels ($xmax='x' et $ymax='y'), l'image sera de taille normale.
+         * Appeler cette fonction efface les paramÃ¨tres enregistrÃ©s pour AlloImage::cut() (Les deux mÃ©thodes ne peuvent Ãªtre utilisÃ©es en mÃªme temps).
          * 
          * @param int $xmax='x' La largeur maximale de l'image, en pixels. Laisser 'x' pour une largeur automatique en fonction de $ymax.
          * @param int $ymax='y' La hauteur maximale de l'image, en pixels. Laisser 'y' pour une hauteur automatique en fonction de $xmax.
          * @return this
          */
         
-        public function resize( $xmax='x', $ymax='y' )
+        public function resize($xmax='x', $ymax='y')
         {
             $this->imageSize = array(
                 'method' => 'r',
                 'xmax' => $xmax,
                 'ymax' => $ymax
-            );
+           );
             
             return $this;
         }
@@ -1559,27 +1555,27 @@
         
         /**
          * Redimensionner l'image au plus petit, puis couper les bords trop grands.
-         * Appeler cette fonction efface les paramètres enregistrés pour AlloImage::resize() (Les deux méthodes ne peuvent être utilisées en même temps).
+         * Appeler cette fonction efface les paramÃ¨tres enregistrÃ©s pour AlloImage::resize() (Les deux mÃ©thodes ne peuvent Ãªtre utilisÃ©es en mÃªme temps).
          * 
          * @param int $xmax La largeur maximale de l'image, en pixels.
          * @param int $ymax La hauteur maximale de l'image, en pixels.
          * @return this
          */
         
-        public function cut( $xmax, $ymax )
+        public function cut($xmax, $ymax)
         {
             $this->imageSize = array(
                 'method' => 'c',
                 'xmax' => (int) $xmax,
                 'ymax' => (int) $ymax
-            );
+           );
             
             return $this;
         }
         
         
         /**
-         * Retourne les paramètres enregistrés du redimensionnement/recoupe de l'image.
+         * Retourne les paramÃ¨tres enregistrÃ©s du redimensionnement/recoupe de l'image.
          * 
          * @return array|false
          */
@@ -1591,7 +1587,7 @@
         
         
         /**
-         * Règle l'image à sa taille maximale (Effacer redimensionnement/recoupe)
+         * RÃ¨gle l'image Ã  sa taille maximale (Effacer redimensionnement/recoupe)
          * 
          * @return array|false
          */
@@ -1618,11 +1614,11 @@
         /**
          * Modifier le serveur (host) de l'image.
          * 
-         * @param string $server L'adresse sans slash du serveur (ex: 'images.allocine.fr'), le même paramètre que pour AlloHelper::lang(), ou 'default' pour régler selon le langage enregistré.
+         * @param string $server L'adresse sans slash du serveur (ex: 'images.allocine.fr'), le mÃªme paramÃ¨tre que pour AlloHelper::lang(), ou 'default' pour rÃ©gler selon le langage enregistrÃ©.
          * @return this
          */
         
-        public function setImageHost( $server )
+        public function setImageHost($server)
         {
             switch ($server)
             {
@@ -1643,16 +1639,16 @@
         
         
         /**
-         * Créer une nouvelle image grâce à son URL.
-         * Si l'url est invalide, l'image utilisée sera celle par défaut.
+         * CrÃ©er une nouvelle image grÃ¢ce Ã  son URL.
+         * Si l'url est invalide, l'image utilisÃ©e sera celle par dÃ©faut.
          * 
          * @param string $url=null L'URL de l'image.
          * @throws ErrorException
          */
         
-        public function __construct( $url = null )
+        public function __construct($url = null)
         {
-            if ( empty($url) || !filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED) )
+            if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED))
             {
                 $this->imageHost = AlloHelper::$imagesUrl;
                 $this->imagePath = self::DEFAULT_IMAGE_PATH;
@@ -1672,11 +1668,11 @@
                 // Parsage de l'URL
                 $explodePath = explode('/', $this->imagePath);
                 
-                // Première partie vide ?
+                // PremiÃ¨re partie vide ?
                 if (empty($explodePath[0]))
                     unset($explodePath[0]);
                 
-                // Détecte les paramètres jusqu'au début du path réel.
+                // DÃ©tecte les paramÃ¨tres jusqu'au dÃ©but du path rÃ©el.
                 foreach ($explodePath as $iPathPart => $pathPart)
                 {
                     if (strpos($pathPart, '_') === false)
@@ -1684,7 +1680,7 @@
                     else
                         unset($explodePath[$iPathPart]);
                     
-                    // Icône
+                    // IcÃ´ne
                     if (strpos($pathPart, 'o') === 0 && preg_match("#^o_(.+)_(.+)_(.+)$#i", $pathPart, $i) != false)
                     {
                         $this->icon($i[3], $i[2], $i[1]);
@@ -1718,7 +1714,7 @@
         
         
         /**
-         * Construit l'URL à partir des paramètres enregistrés.
+         * Construit l'URL Ã  partir des paramÃ¨tres enregistrÃ©s.
          * @return string
          */
         
@@ -1727,15 +1723,15 @@
             $params = array();
             
             // Taille
-            if ( $this->imageSize !== false )
+            if ($this->imageSize !== false)
                 $params[] = "{$this->imageSize['method']}_{$this->imageSize['xmax']}_{$this->imageSize['ymax']}";
             
             // Bordure
-            if ( $this->imageBorder !== false )
+            if ($this->imageBorder !== false)
                 $params[] = "b_{$this->imageBorder['size']}_{$this->imageBorder['color']}";
             
-            // Icône
-            if ( $this->imageIcon !== false )
+            // IcÃ´ne
+            if ($this->imageIcon !== false)
                 $params[] = "o_{$this->imageIcon['icon']}_{$this->imageIcon['margin']}_{$this->imageIcon['position']}";
             
             return "http://{$this->imageHost}" . (!empty($params) ? '/' . implode('/', $params) : '') . "/{$this->imagePath}";
