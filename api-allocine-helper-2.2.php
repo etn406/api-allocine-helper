@@ -293,7 +293,7 @@
             ));
 			            
             $queryURL = ALLO_DEFAULT_URL_API . '/' . $type;
-			      $searchQuery = http_build_query($this->getPresets()) . '&sed=' . date('Ymd');
+			      $searchQuery = str_replace('%2B', '+', http_build_query($this->getPresets())) . '&sed=' . date('Ymd');
 			      $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
 			      $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
 			      $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
