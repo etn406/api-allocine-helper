@@ -1,9 +1,19 @@
 {
-    "name": "api-allocine/api-allocine-helper",
-    "type": "library",
-    "homepage": "https://github.com/etienne-gauvin/api-allocine-helper",
-    "license": "CC-BY-SA",
-    "require": {
-        "php": ">=5.3.0"
+  "name": "api-allocine/api-allocine-helper",
+  "description": "An easy way to use the Allocine (and its other foreign websites) API",
+  "type": "library",
+  "homepage": "https://github.com/etienne-gauvin/api-allocine-helper",
+  "license": "CC-BY-SA",
+  "authors": [
+    {
+      "name": "Etienne Gauvin",
+      "email": "etiennegauvin41@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "autoload": {
+    "files": ["api-allocine-helper.php"]
+  }
 }
