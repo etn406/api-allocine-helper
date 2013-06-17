@@ -3,21 +3,22 @@ API Allociné Helper PHP
 
 [English version](#english)
 
-L'API Allociné Helper permet d'utiliser plus facilement l'API d'[AlloCiné](http://www.allocine.fr/), [Beyazperde](http://www.beyazperde.com/), [Screenrush](http://www.screenrush.co.uk/), [Sensacine](http://www.sensacine.com/), [Adorocinema](http://www.adorocinema.com/) et [Filmstarts](http://www.filmstarts.de/).  
-Trouvez des informations sur les films, stars, articles, horaires, etc, grâce à la classe **AlloHelper**.  
-Il est possible de manipuler les données reçues grâce à la classe **AlloData** (optionnel).  
-Et en bonus, vous pouvez modifier simplement les posters et images stockés sur Allociné en changeant l'URL grâce à la classe **AlloImage**.
+L'API Allociné Helper permet d'utiliser plus simplement l'API d'[AlloCiné](http://www.allocine.fr/).
+La classe **AlloHelper** permet de trouver des informations sur les films, stars, articles, horaires et critiques.
+Il est possible de manipuler les données reçues grâce à la classe **AlloData** (optionnel).
+La classe **AlloImage** permet de manipuler facilement la taille des posters et images stockés sur Allociné.
 
 ### Installation
 
-C'est juste un script, copiez-le dans le répertoire souhaité et faites un `require_once "./api-allocine-helper.php";` dans votre code.
+Déplacer le fichier `api-allocine-helper.php` dans le répertoire souhaité.
+Un simple `require_once "./api-allocine-helper.php";` permet d'utiliser l'API dans votre code.
 
 ### Usage
 
-L'utilisation est très simple, néanmoins il est fortement conseillé de connaître la POO, et le bloc `try{} catch(){}`.
+L'utilisation est très simple, néanmoins il est fortement conseillé de connaître la programmation orientée objet, et de savoir utiliser le bloc `try{} catch(){}`.
 Exemple d'utilisation pour récupérer les informations d'un film:
 
-Premièrement, créer un objet `AlloHelper`:
+Premièrement, inclure le fichier et créer un objet `AlloHelper`:
 
 ```
 <?php
@@ -29,7 +30,7 @@ Premièrement, créer un objet `AlloHelper`:
     
 ```
 
-Pour plus de clareté, on définit les paramètres à l'avance: le code du film, et la quantité d'informations a récupérer.
+Pour plus de clareté, on définit les paramètres à l'avance: le code du film, et la quantité d'informations à récupérer.
 
 ```
     $code = 27061;
@@ -37,7 +38,7 @@ Pour plus de clareté, on définit les paramètres à l'avance: le code du film,
     
 ```
 
-Ensuite, il est conseillé d'effectuer des requêtes dans un bloc `try{} catch(){}` pour la gestion des exceptions.
+Ensuite, il est conseillé d'effectuer des requêtes dans un bloc `try{} catch(){}` pour gérer les erreurs.
 
 ```
     try
@@ -64,7 +65,7 @@ Ensuite, il est conseillé d'effectuer des requêtes dans un bloc `try{} catch()
 English
 -------
 
-API Allociné Helper is a support for using the API of [AlloCiné](http://www.allocine.fr/), of [Beyazperde](http://www.beyazperde.com/), of [Screenrush](http://www.screenrush.co.uk/), of [Sensacine](http://www.sensacine.com/), of [Adorocinema](http://www.adorocinema.com/) and of [Filmstarts](http://www.filmstarts.de/).
+API Allociné Helper is a support for using the API of [AlloCiné](http://www.allocine.fr/).
 Find a lot of information about movies, people, tv series, etc, with the class **AlloHelper**.
 It is possible to manipulate the received data with the class **AlloData** (optional).
 And as a bonus, you can simply modify posters and photos from the Allociné server just by changing the URL with the class **AlloImage**.
