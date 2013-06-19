@@ -407,8 +407,6 @@
                 return false;
             }
             
-            var_dump($data);
-            
             $data = @json_decode($data, 1);
             
             if (empty($data))
