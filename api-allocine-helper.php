@@ -276,6 +276,27 @@
         
         
         /**
+         * Informations sur la dernière requête.
+         * @var array
+         */
+        
+        protected $lastRequest;
+        
+        
+        /**
+         * Retourne les information sur la dernière requête.
+         * [URL, IP, userAgent, presets, rawData]
+         * @return array|null
+         */
+        
+        public function getRequestInfos()
+        {
+          if (!empty($this->lastRequest))
+            return $this->lastRequest;
+        }
+        
+        
+        /**
          * Retourne un URL créé à partir de différentes données.
          * Les paramètres seront ajoutés dans l'ordre, sous leur forme "clé=valeur" ou "valeur" si il n'y a pas de clé.
          * Si c'est un array les sous éléments seront implosés et séparés par des virgules "clé" => array("val1", "val2", "val3") deviendra "clé=val1,val2,val3"
@@ -393,6 +414,14 @@
                         
 				        $data = curl_exec($curl);
                 curl_close($curl);
+                
+                $this->lastRequest = array(
+                  'userAgent' => $userAgent,
+                  'URL' => $url,
+                  'IP' => $ip,
+                  'presets' => $this->getPresets(),
+                  'rawData' => $data
+                );
             }
             
             else
