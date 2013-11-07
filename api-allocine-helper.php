@@ -1364,7 +1364,20 @@
         
         public function offsetExists($offset)
         {
-            return ($this->_getProperty($this->_position, true) !== null);
+            return ($this->_getProperty($offset, true) !== null);
+        }
+        
+        
+        /**
+         * Lors de la vérification de l'existence d'une propriété avec isset (interface ArrayAccess)
+         * 
+         * @param string|int $offset
+         * @return bool
+         */
+        
+        public function __isset($offset)
+        {
+            return ($this->_getProperty($offset, true) !== null);
         }
         
         
