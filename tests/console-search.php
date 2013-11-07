@@ -30,7 +30,8 @@
         // For each movie result.
         foreach ($data->movie as $i => $movie)
         {
-            echo $i . ': ' . $movie->title . PHP_EOL;
+            // i | code | title
+            echo $i . "\t" . $movie->code . "\t" . $movie->title . PHP_EOL;
         }
     }
     
