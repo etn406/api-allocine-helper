@@ -833,6 +833,12 @@
                     if (empty($data['title']))
                         $data['title'] = $data['originalTitle'];
                     
+                    // Poster
+                    if (!empty($data['poster']) and !empty($data['poster']['href']))
+                        $data['poster'] = new AlloImage($data['poster']['href']);
+                    else
+                        $data['poster'] = new AlloImage();
+                        
                     // On retourne les données
                     if (class_exists('AlloData'))
                         return new AlloData($data);
