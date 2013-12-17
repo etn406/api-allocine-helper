@@ -850,10 +850,10 @@
                     
                     // Correction des apostrophes dans le synopsis si nécessaire
                     if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsis']))
-                      $data['synopsis'] = preg_replace("#\?(\S)#", "'$1", $data['synopsis']);
+                      $data['synopsis'] = preg_replace("#\p{L}\K[‘’](?=\p{L})#u", "'", $data['synopsis']);
                     
                     if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsisShort']))
-                      $data['synopsisShort'] = preg_replace("#\?(\S)#", "'$1", $data['synopsisShort']);
+                      $data['synopsisShort'] = preg_replace("#\p{L}\K[‘’](?=\p{L})#u", "'", $data['synopsisShort']);
                     
                     // On retourne les données
                     if (class_exists('AlloData'))
