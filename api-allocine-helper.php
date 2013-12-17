@@ -96,6 +96,15 @@
     define('ALLO_PARTNER', '100043982026');	
     
     
+    /**
+    * Activer la détection des problèmes d'apostrophes.
+    * 
+    * @var bool
+    */
+    
+    define('ALLO_AUTO_CORRECT_APOSTROPHES', true);
+    
+    
     ###################################################################
     
     
@@ -838,7 +847,14 @@
                         $data['poster'] = new AlloImage($data['poster']['href']);
                     else
                         $data['poster'] = new AlloImage();
-                        
+                    
+                    // Correction des apostrophes dans le synopsis si nécessaire
+                    if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsis']))
+                      $data['synopsis'] = preg_replace("#\?(\S)#", "'$1", $data['synopsis']);
+                    
+                    if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsisShort']))
+                      $data['synopsisShort'] = preg_replace("#\?(\S)#", "'$1", $data['synopsisShort']);
+                    
                     // On retourne les données
                     if (class_exists('AlloData'))
                         return new AlloData($data);

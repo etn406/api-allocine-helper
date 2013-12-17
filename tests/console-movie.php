@@ -16,6 +16,7 @@
         $movie = $allohelper->movie($code);
         
         echo 'Title : ' . $movie->title . PHP_EOL;
+        echo 'Synopsis : ' . $movie->synopsis . PHP_EOL;
         echo 'Poster URL : ' . $movie->poster . PHP_EOL;
     }
     
