@@ -45,6 +45,9 @@
     define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
     define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
     
+    
+    /** Languages (except french) don't work anymore :/ **/
+    
     # Screenrush.co.uk, United-Kingdom
     // define('ALLO_DEFAULT_URL_API', "api.screenrush.co.uk");
     // define('ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk");
