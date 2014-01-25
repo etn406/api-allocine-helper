@@ -42,12 +42,12 @@
     */
     
     # Allociné.fr, France
-    define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
-    define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
+    // define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
+    // define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
     
     # Screenrush.co.uk, United-Kingdom
-    // define('ALLO_DEFAULT_URL_API', "api.screenrush.co.uk");
-    // define('ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk");
+    define('ALLO_DEFAULT_URL_API', "api.screenrush.co.uk");
+    define('ALLO_DEFAULT_URL_IMAGES', "images.screenrush.co.uk");
     
     # Beyazperde.com, Türkiye
     // define('ALLO_DEFAULT_URL_API', "api.beyazperde.com");
@@ -422,6 +422,7 @@
 				        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
                         
 				        $data = curl_exec($curl);
+				        $curlError = curl_error($curl);
                 curl_close($curl);
                 
                 $this->lastRequest = array(
@@ -441,7 +442,7 @@
             
             if (empty($data))
             {
-                $this->error("An error occurred while retrieving the data.", 2);
+                $this->error("An cURL error occurred while retrieving the data : $curlError". , 2);
                 return false;
             }
             
