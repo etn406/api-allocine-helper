@@ -323,9 +323,11 @@
                 'format' => 'json',
                 'partner' => ALLO_PARTNER,
             ));
-			            
+            $params = $this->getPresets();
+            $params['filter'] = implode(",", $params['filter']);
+            
             $queryURL = ALLO_DEFAULT_URL_API . '/' . $type;
-			      $searchQuery = str_replace('%2B', '+', http_build_query($this->getPresets())) . '&sed=' . date('Ymd');
+			      $searchQuery = str_replace('%2B', '+', http_build_query($params)) . '&sed=' . date('Ymd');
 			      $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
 			      $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
 			      $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
@@ -445,7 +447,7 @@
             
             if (empty($data))
             {
-                $this->error("An cURL error occurred while retrieving the data : $curlError". , 2);
+                $this->error("An cURL error occurred while retrieving the data : $curlError." , 2);
                 return false;
             }
             
@@ -1328,8 +1330,8 @@
             
             if (!$this->valid())
             {
-                AlloHelper::error("This offset ($offset) does not exist.", 6);
-                $this->position = $anciennePosition;
+                AlloHelper::error("This offset ($newPosition) does not exist.", 6);
+                $this->position = $lastPosition;
             }
         }
         
