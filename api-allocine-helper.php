@@ -445,7 +445,7 @@
             
             if (empty($data))
             {
-                $this->error("An cURL error occurred while retrieving the data : $curlError". , 2);
+                $this->error("An cURL error occurred while retrieving the data : $curlError." , 2);
                 return false;
             }
             
@@ -1328,8 +1328,8 @@
             
             if (!$this->valid())
             {
-                AlloHelper::error("This offset ($offset) does not exist.", 6);
-                $this->position = $anciennePosition;
+                AlloHelper::error("This offset ($newPosition) does not exist.", 6);
+                $this->position = $lastPosition;
             }
         }
         
