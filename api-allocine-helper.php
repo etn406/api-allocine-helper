@@ -9,13 +9,14 @@
     * 
     * Codes des erreurs:
     * ------------------
-    * 1. Aucune fonction de récupération de données distantes n'est disponible (php_curl|file_get_contents).
+    * 1. L'extension PHP cURL n'est pas disponible.
     * 2. Erreur durant la récupération des données sur le serveur d'Allociné.
     * 3. Erreur durant la conversion des données JSON en array.
     * 4. Les mots-clés pour la recherche doivent contenir plus d'un caractère.
     * 5. Allociné a retourné une erreur (Le message de l'erreur est le message de l'ErrorException).
     * 6. offset inexistant (Uniquement dans la classe AlloData).
-    * 7. Ce n'est pas un lien vers une image qui a été fournit en paramètre à la méthode __construct() de la classe AlloImage. 
+    * 7. Ce n'est pas un lien vers une image qui a été fournit en paramètre à la méthode __construct() de la classe AlloImage.
+    * 8. L'extension PHP JSON n'est pas disponible.
     * 
     * 
     * @licence http://creativecommons.org/licenses/by-sa/3.0/fr/
@@ -33,8 +34,8 @@
     */
     
     define('ALLOCINE_SECRET_KEY', '29d185d98c984a359e6e6f26a0474269');
-	  
-	  
+      
+      
     /**
     * L'URL de l'API et du serveur des images (par défaut).
     * The URL of the API and the server images (default).
@@ -96,7 +97,7 @@
     * @var string
     */
     
-    define('ALLO_PARTNER', '100043982026');	
+    define('ALLO_PARTNER', '100043982026'); 
     
     
     /**
@@ -210,7 +211,7 @@
         
         /**
          * Préréglages pour les paramètres d'URL
-		 * @var array
+         * @var array
          */
         
         private $_presets = array();
@@ -327,12 +328,12 @@
             $params['filter'] = implode(",", $params['filter']);
             
             $queryURL = ALLO_DEFAULT_URL_API . '/' . $type;
-			      $searchQuery = str_replace('%2B', '+', http_build_query($params)) . '&sed=' . date('Ymd');
-			      $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
-			      $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
-			      $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
-			
-			      return $queryURL;
+                  $searchQuery = str_replace('%2B', '+', http_build_query($params)) . '&sed=' . date('Ymd');
+                  $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
+                  $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
+                  $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
+            
+                  return $queryURL;
         }
         
         
@@ -373,7 +374,7 @@
                 "Mozilla/5.0 (Linux; U; Android $v; fr-fr; LG-P5$b Build/FRG83) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
             );
             
-			      return $userAgents[rand(0, count($userAgents) - 1)];
+                  return $userAgents[rand(0, count($userAgents) - 1)];
         }
         
         
@@ -410,24 +411,30 @@
         
         protected function getDataFromURL($url)
         {
+            if (!function_exists('json_decode'))
+            {
+                $this->error("The extension php_json must be installed with PHP and enabled.", 8);
+                return false;
+            }
+            
             if (function_exists("curl_init"))
             {
                 $curl = ($this->_cURL == null) ? curl_init() : $this->_cURL;
-				        $userAgent = self::getRandomUserAgent();
-				        $ip = rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255);
-				        
+                        $userAgent = self::getRandomUserAgent();
+                        $ip = rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255).'.'.rand(0, 255);
+                        
                 curl_setopt ($curl, CURLOPT_URL, $url);
                 curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, 10);
                 curl_setopt ($curl, CURLOPT_RETURNTRANSFER, true);
-				        curl_setopt ($curl, CURLOPT_USERAGENT, $userAgent);
-				        
-				        $headers[] = "REMOTE_ADDR: $ip";
-				        $headers[] = "HTTP_X_FORWARDED_FOR: $ip";
-				        
-				        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                        curl_setopt ($curl, CURLOPT_USERAGENT, $userAgent);
                         
-				        $data = curl_exec($curl);
-				        $curlError = curl_error($curl);
+                        $headers[] = "REMOTE_ADDR: $ip";
+                        $headers[] = "HTTP_X_FORWARDED_FOR: $ip";
+                        
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                        
+                        $data = curl_exec($curl);
+                        $curlError = curl_error($curl);
                 curl_close($curl);
                 
                 $this->lastRequest = array(
@@ -447,15 +454,15 @@
             
             if (empty($data))
             {
-                $this->error("An cURL error occurred while retrieving the data : $curlError." , 2);
+                $this->error("An cURL error occurred while retrieving the data: $curlError." , 2);
                 return false;
             }
             
-            $data = @json_decode($data, 1);
+            $data = @json_decode($data, true);
             
-            if (empty($data))
+            if (empty($data) or !is_array($data) or json_last_error())
             {
-                $this->error("An error occurred when converting data.", 3);
+                $this->error("An JSON error (" . json_last_error() . ") occurred when converting data: " . json_last_error_msg(), 3);
                 return false;
             }
             else return $data;
