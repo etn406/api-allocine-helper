@@ -1,13 +1,13 @@
 {
   "name": "api-allocine/api-allocine-helper",
-  "description": "An easy way to use the Allocine (and its other foreign websites) API",
+  "description": "An easy way to use the Allocine API",
   "type": "library",
   "homepage": "https://github.com/etienne-gauvin/api-allocine-helper",
   "license": "CC-BY-SA",
   "authors": [
     {
       "name": "Etienne Gauvin",
-      "email": "etiennegauvin41@gmail.com"
+      "email": "etienne@gauvin.info"
     }
   ],
   "require": {

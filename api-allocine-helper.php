@@ -20,8 +20,8 @@
     * 
     * 
     * @licence http://creativecommons.org/licenses/by-sa/3.0/fr/
-    * @author Etienne Gauvin <etiennegauvin41@gmail.com>
-    * @version 2.2
+    * @author Etienne Gauvin <etienne@gauvin.info>
+    * @version 2.3
     */
     
     ###################################################################
