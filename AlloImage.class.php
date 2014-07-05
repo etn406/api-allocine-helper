@@ -279,7 +279,7 @@
                 case 'es': case 'sensacine.com':
                 case 'fr': case 'allocine.fr':
                 case 'en': case 'screenrush.co.uk':
-                    $this->imageHost = self::$imagesUrl;
+                    $this->imageHost = ALLO_DEFAULT_URL_IMAGES;
                 break;
                 
                 default:
@@ -298,11 +298,11 @@
          * @throws ErrorException
          */
         
-        public function __construct($url = null)
+        public function __construct($url = null, $imageHost = ALLO_DEFAULT_URL_IMAGES)
         {
             if (empty($url) || !filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED))
             {
-                $this->imageHost = AlloHelper::$imagesUrl;
+                $this->imageHost = $imageHost;
                 $this->imagePath = self::DEFAULT_IMAGE_PATH;
                 
             }
@@ -310,12 +310,12 @@
             {
                 $urlParse = parse_url($url);
                 
-                $this->imageHost = !empty($urlParse['host']) ? $urlParse['host'] : AlloHelper::$imagesUrl;
+                $this->imageHost = !empty($urlParse['host']) ? $urlParse['host'] : $imageHost;
                 
                 if (!empty($urlParse['path']))
                     $this->imagePath = $urlParse['path'];
                 else
-                    AlloHelper::error("This isn't a URL to an image.", 7);
+                    $this->error("This isn't a URL to an image.", 7);
                 
                 // Parsage de l'URL
                 $explodePath = explode('/', $this->imagePath);
@@ -400,6 +400,27 @@
         {
             return $this->url();
         }
-        
+
+        /**
+         * Provoquer une ErrorException et/ou retourne la dernière provoquée.
+         *
+         * @param string $message=null Le message de l'erreur
+         * @param int $code=0 Le code de l'erreur
+         * @return ErrorException|null
+         */
+        public function error($message = null, $code = 0)
+        {
+            if ($message !== null)
+            {
+                $error = new ErrorException($message, $code);
+
+                AlloHelper::$_lastError = $error;
+
+                if ($this->throwExceptions)
+                    throw $error;
+            }
+
+            return AlloHelper::$_lastError;
+        }
     }
 
