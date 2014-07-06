@@ -6,15 +6,51 @@
     
     class AlloHelper
     {
-        
+
         /**
          * Contient la dernière ErrorException
          * @var ErrorException|null
          */
         
         private static $_lastError;
-        
-        
+
+        /**
+         * @var bool Flag pour declencher des exceptions
+         */
+        protected $throwExceptions = ALLO_THROW_EXCEPTIONS;
+
+        /**
+         * @var string Clé secrète
+         */
+        protected $allocineSecretKey = ALLOCINE_SECRET_KEY;
+
+        /**
+         * @var bool Flag pour activer le decodage UTF8
+         */
+        protected $utf8Decode = ALLO_UTF8_DECODE;
+
+        /**
+         * @var bool Flag pour corriger les apostrophes
+         */
+        protected $autoCorrectApostrophe = ALLO_AUTO_CORRECT_APOSTROPHES;
+
+        /**
+         * @var string Le partenaire utilisé pour toutes les requêtes.
+         */
+        protected $partner = ALLO_PARTNER;
+
+        /**
+         * Contient l'adresse du site où chercher les données.
+         * @var string
+         */
+        protected $APIUrl = ALLO_DEFAULT_URL_API;
+
+        /**
+         * Contient l'adresse du site où chercher les images.
+         * @var string
+         */
+        protected $imagesUrl = ALLO_DEFAULT_URL_IMAGES;
+
         /**
          * Provoquer une ErrorException et/ou retourne la dernière provoquée.
          * 
@@ -22,8 +58,7 @@
          * @param int $code=0 Le code de l'erreur
          * @return ErrorException|null
          */
-        
-        public static function error($message = null, $code = 0)
+        public function error($message = null, $code = 0)
         {
             if ($message !== null)
             {
@@ -31,30 +66,13 @@
                 
                 self::$_lastError = $error;
                 
-                if (ALLO_THROW_EXCEPTIONS)
+                if ($this->throwExceptions)
                     throw $error;
             }
             
             return self::$_lastError;
         }
-        
-        
-        /**
-         * Contient l'adresse du site où chercher les données.
-         * @var string
-         */
-        
-        public static $APIUrl = ALLO_DEFAULT_URL_API;
-        
-        
-        /**
-         * Contient l'adresse du site où chercher les images.
-         * @var string
-         */
-        
-        public static $imagesUrl = ALLO_DEFAULT_URL_IMAGES;
-        
-        
+
         /**
          * Modifier le langage.
          * Les initiales du langage sont telles que défini dans la liste des codes ISO 639-1.
@@ -65,33 +83,33 @@
          * @param string $lang=null Les initiales du langage.
          */
         
-        public static function lang($lang = null)
+        public function lang($lang = null)
         {
             switch((string) $lang)
             {
                 case 'de': case 'filmstarts.de':
-                    self::$APIUrl = "api.filmstarts.de";
-                    self::$imagesUrl = "bilder.filmstarts.de";
+                    $this->APIUrl = "api.filmstarts.de";
+                    $this->imagesUrl = "bilder.filmstarts.de";
                 break;
                 
                 case 'es': case 'sensacine.com':
-                    self::$APIUrl = "api.sensacine.com";
-                    self::$imagesUrl = "imagenes.sensacine.com";
+                    $this->APIUrl = "api.sensacine.com";
+                    $this->imagesUrl = "imagenes.sensacine.com";
                 break;
                 
                 case 'fr': case 'allocine.fr':
-                    self::$APIUrl = "api.allocine.fr";
-                    self::$imagesUrl = "images.allocine.fr";
+                    $this->APIUrl = "api.allocine.fr";
+                    $this->imagesUrl = "images.allocine.fr";
                 break;
                 
                 case 'en': case 'screenrush.co.uk':
-                    self::$APIUrl = "api.screenrush.co.uk";
-                    self::$imagesUrl = "images.screenrush.co.uk";
+                    $this->APIUrl = "api.screenrush.co.uk";
+                    $this->imagesUrl = "images.screenrush.co.uk";
                 break;
                 
                 case 'tr': case 'beyazperde.com':
-                    self::$APIUrl = "api.beyazperde.com";
-                    self::$imagesUrl = "tri.acimg.net";
+                    $this->APIUrl = "api.beyazperde.com";
+                    $this->imagesUrl = "tri.acimg.net";
                 break;
             }
         }
@@ -210,14 +228,14 @@
         {
             $this->set(array(
                 'format' => 'json',
-                'partner' => ALLO_PARTNER,
+                'partner' => $this->partner,
             ));
             $params = $this->getPresets();
             $params['filter'] = implode(",", $params['filter']);
             
-            $queryURL = ALLO_DEFAULT_URL_API . '/' . $type;
+            $queryURL = $this->APIUrl . '/' . $type;
                   $searchQuery = str_replace('%2B', '+', http_build_query($params)) . '&sed=' . date('Ymd');
-                  $toEncrypt = ALLOCINE_SECRET_KEY . $searchQuery;
+                  $toEncrypt = $this->allocineSecretKey . $searchQuery;
                   $sig = urlencode(base64_encode(sha1($toEncrypt, true)));
                   $queryURL .= '?' . $searchQuery . '&sig=' . $sig;
             
@@ -386,7 +404,7 @@
                 if (empty($data['error']))
                     // On retourne les données
                     if (class_exists('AlloData'))
-                        return new AlloData($data[$container]);
+                        return new AlloData($data[$container], $this->utf8Decode);
                     else
                         return $data;
                 
@@ -469,9 +487,9 @@
                         $result['castingShort']['actors'] = (string) @$result['castingShort']['actors'];
                         
                         if (!empty($result['poster']['href']))
-                            $result['poster'] = new AlloImage($result['poster']['href']);
+                            $result['poster'] = new AlloImage($result['poster']['href'], $this->imagesUrl);
                         else
-                            $result['poster'] = new AlloImage();
+                            $result['poster'] = new AlloImage(null, $this->imagesUrl);
                         
                         $result['posterURL'] = $result['poster']->url();
                         $result['link'] = (array) @$result['link'];
@@ -512,7 +530,7 @@
                 
                 // On retourne les données
                 if (class_exists('AlloData'))
-                    return new AlloData($data);
+                    return new AlloData($data, $this->utf8Decode);
                 else
                     return $data;
             }
@@ -745,20 +763,20 @@
                     
                     // Poster
                     if (!empty($data['poster']) and !empty($data['poster']['href']))
-                        $data['poster'] = new AlloImage($data['poster']['href']);
+                        $data['poster'] = new AlloImage($data['poster']['href'], $this->imagesUrl);
                     else
-                        $data['poster'] = new AlloImage();
+                        $data['poster'] = new AlloImage(null, $this->imagesUrl);
                     
                     // Correction des apostrophes dans le synopsis si nécessaire
-                    if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsis']))
+                    if ($this->autoCorrectApostrophe and !empty($data['synopsis']))
                       $data['synopsis'] = preg_replace("#\p{L}\K[‘’](?=\p{L})#u", "'", $data['synopsis']);
                     
-                    if (ALLO_AUTO_CORRECT_APOSTROPHES and !empty($data['synopsisShort']))
+                    if ($this->autoCorrectApostrophe and !empty($data['synopsisShort']))
                       $data['synopsisShort'] = preg_replace("#\p{L}\K[‘’](?=\p{L})#u", "'", $data['synopsisShort']);
                     
                     // On retourne les données
                     if (class_exists('AlloData'))
-                        return new AlloData($data);
+                        return new AlloData($data, $this->utf8Decode);
                     else
                         return $data;
                 }
@@ -1009,7 +1027,132 @@
             // Récupération et revoi des données
             return $this->getData('rest/v3/episode', 'episode', $url);
         }
-        
+
+        /**
+         * @param boolean $utf8Decode
+         */
+        public function setUtf8Decode($utf8Decode)
+        {
+            $this->utf8Decode = $utf8Decode;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function getUtf8Decode()
+        {
+            return $this->utf8Decode;
+        }
+
+        /**
+         * @param array $lastRequest
+         */
+        public function setLastRequest($lastRequest)
+        {
+            $this->lastRequest = $lastRequest;
+        }
+
+        /**
+         * @return array
+         */
+        public function getLastRequest()
+        {
+            return $this->lastRequest;
+        }
+
+        /**
+         * @param string $partner
+         */
+        public function setPartner($partner)
+        {
+            $this->partner = $partner;
+        }
+
+        /**
+         * @return string
+         */
+        public function getPartner()
+        {
+            return $this->partner;
+        }
+
+        /**
+         * @param boolean $throwExceptions
+         */
+        public function setThrowExceptions($throwExceptions)
+        {
+            $this->throwExceptions = $throwExceptions;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function getThrowExceptions()
+        {
+            return $this->throwExceptions;
+        }
+
+        /**
+         * @param boolean $autoCorrectApostrophe
+         */
+        public function setAutoCorrectApostrophe($autoCorrectApostrophe)
+        {
+            $this->autoCorrectApostrophe = $autoCorrectApostrophe;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function getAutoCorrectApostrophe()
+        {
+            return $this->autoCorrectApostrophe;
+        }
+
+        /**
+         * @param string $allocineSecretKey
+         */
+        public function setAllocineSecretKey($allocineSecretKey)
+        {
+            $this->allocineSecretKey = $allocineSecretKey;
+        }
+
+        /**
+         * @return string
+         */
+        public function getAllocineSecretKey()
+        {
+            return $this->allocineSecretKey;
+        }
+
+        /**
+         * @param string $imagesUrl
+         */
+        public function setImagesUrl($imagesUrl)
+        {
+            $this->imagesUrl = $imagesUrl;
+        }
+
+        /**
+         * @return string
+         */
+        public function getImagesUrl()
+        {
+            return $this->imagesUrl;
+        }
+
+        /**
+         * @param string $APIUrl
+         */
+        public function setAPIUrl($APIUrl)
+        {
+            $this->APIUrl = $APIUrl;
+        }
+
+        /**
+         * @return string
+         */
+        public function getAPIUrl()
+        {
+            return $this->APIUrl;
+        }
     }
-    
-    

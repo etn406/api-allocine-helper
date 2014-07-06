@@ -9,22 +9,23 @@
 
     class AlloData implements ArrayAccess, SeekableIterator, Countable
     {
-        
         /**
          * Contiendra les données
          * @var array
          */
-        
         private $_data = array();
-        
-        
+
+        /**
+         * @var bool Flag pour activer le decodage UTF8
+         */
+        protected $utf8Decode = ALLO_UTF8_DECODE;
+
         /**
          * Valeur de remplacement pour les symboles '$' ou false pour ne rien modifier.
          */
         
         const REPLACEMENT_OF_DOLLAR_SIGN = 'value';
-        
-        
+
         /**
          * Décoder une variable depuis l'UTF8.
          * 
@@ -33,9 +34,9 @@
          * @return array|string Le tableau|la chaîne décodé(e)
          */
         
-        public static function utf8_decode($var, $tab = false)
+        public function utf8_decode($var, $tab = false)
         {
-            if (ALLO_UTF8_DECODE)
+            if ($this->utf8Decode)
             {
                 if (is_string($var)) return utf8_decode(str_replace('â€™', "'", $var));
                 elseif (!is_array($var) || !$tab) return $var;
@@ -43,7 +44,7 @@
                 {
                     $return = array();
                     foreach ($var as $i => $cell)
-                        $return[utf8_decode($i)] = self::utf8_decode($cell, true);
+                        $return[utf8_decode($i)] = $this->utf8_decode($cell, true);
                     return $return;
                 }
             }
@@ -56,9 +57,10 @@
          * Constructeur
          */
         
-        public function __construct($data)
+        public function __construct($data, $utf8Decode = ALLO_UTF8_DECODE)
         {
             $this->_data = (array) $data;
+            $this->utf8Decode = $utf8Decode;
         }
         
         
@@ -89,7 +91,7 @@
                 else
                 {
                     if (!$ignoreException)
-                        AlloHelper::error("This offset ($offset) does not exist.", 6);
+                        $this->error("This offset ($offset) does not exist.", 6);
                     
                     // Eviter une erreur en retournant une référence, si les exceptions sont désactivées.
                     $b = null;
@@ -107,7 +109,7 @@
         
         public function getArray()
         {
-            return (array) self::utf8_decode($this->_getProperty(), true);
+            return (array) $this->utf8_decode($this->_getProperty(), true);
         }
         
         
@@ -120,8 +122,8 @@
         {
             $data = $this->_getProperty($offset);
             if (is_array($data))
-                return new AlloData($data);
-            else return self::utf8_decode($data);
+                return new AlloData($data, $this->utf8Decode);
+            else return $this->utf8_decode($data);
         }
         
         
@@ -156,8 +158,8 @@
         {
             $data = $this->_getProperty($this->_position);
             if (is_array($data))
-                return new AlloData($data);
-            else return self::utf8_decode($data);
+                return new AlloData($data, $this->utf8Decode);
+            else return $this->utf8_decode($data);
         }
         
         /**
@@ -212,7 +214,7 @@
             
             if (!$this->valid())
             {
-                AlloHelper::error("This offset ($newPosition) does not exist.", 6);
+                $this->error("This offset ($newPosition) does not exist.", 6);
                 $this->position = $lastPosition;
             }
         }
@@ -240,8 +242,8 @@
         {
             $data = $this->_getProperty($offset);
             if (is_array($data))
-                return new AlloData($data);
-            else return self::utf8_decode($data);
+                return new AlloData($data, $this->utf8Decode);
+            else return $this->utf8_decode($data);
         }
         
         
@@ -312,7 +314,7 @@
             
             if (count($tab) === 1)
             {
-                $data = new AlloData($tab[0]);
+                $data = new AlloData($tab[0], $this->utf8Decode);
                 if (isset($data[$offset]) && is_string($data[$offset]))
                     return $data[$offset];
             }
@@ -323,7 +325,7 @@
             
             foreach ($tab as $i => $stab)
             {
-                $data = new AlloData($stab);
+                $data = new AlloData($stab, $this->utf8Decode);
                 if (isset($data[$offset]) && is_string($data[$offset]))
                     $values[] = $data[$offset];
             }
@@ -335,6 +337,43 @@
             else
                 return '';
         }
-        
+
+        /**
+         * Provoquer une ErrorException et/ou retourne la dernière provoquée.
+         *
+         * @param string $message=null Le message de l'erreur
+         * @param int $code=0 Le code de l'erreur
+         * @return ErrorException|null
+         */
+        public function error($message = null, $code = 0)
+        {
+            if ($message !== null)
+            {
+                $error = new ErrorException($message, $code);
+
+                AlloHelper::$_lastError = $error;
+
+                if ($this->throwExceptions)
+                    throw $error;
+            }
+
+            return AlloHelper::$_lastError;
+        }
+
+        /**
+         * @param boolean $utf8Decode
+         */
+        public function setUtf8Decode($utf8Decode)
+        {
+            $this->utf8Decode = $utf8Decode;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function getUtf8Decode()
+        {
+            return $this->utf8Decode;
+        }
     }
 
