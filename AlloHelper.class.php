@@ -12,7 +12,7 @@
          * @var ErrorException|null
          */
         
-        private static $_lastError;
+        protected static $_lastError;
 
         /**
          * @var bool Flag pour declencher des exceptions
