@@ -10,6 +10,11 @@
     class AlloData implements ArrayAccess, SeekableIterator, Countable
     {
         /**
+         * @var Exception
+         */
+        public $throwExceptions;
+        
+        /**
          * Contiendra les données
          * @var array
          */
@@ -51,10 +56,12 @@
             else
                 return $var;
         }
-        
-        
+
+
         /**
          * Constructeur
+         * @param $data
+         * @param bool $utf8Decode
          */
         
         public function __construct($data, $utf8Decode = ALLO_UTF8_DECODE)
@@ -103,19 +110,29 @@
         }
         
         /**
-         * Retourne les données sous forme d'un array
-         * 
+         * @param boolean $utf8_decode
+         * @return array
          */
-        
-        public function getArray()
+        public function getArray($utf8_decode = false)
         {
-            return (array) $this->utf8_decode($this->_getProperty(), true);
+            return (array) $this->utf8_decode($this->_getProperty(), $utf8_decode);
         }
-        
-        
+
+        /**
+         * Retourne les données sous forme d'un object
+         * @param boolean $utf8_decode
+         * @return object
+         */
+        public function getObject($utf8_decode = false)
+        {
+            return (object) $this->utf8_decode($this->_getProperty(), $utf8_decode);
+        }
+
+
         /**
          * Si l'on essaie d'accéder à une propriété inexistante (donc un élément de $this->_data)
-         * 
+         * @param $offset
+         * @return AlloData|array|string
          */
         
         public function __get($offset)
@@ -129,7 +146,8 @@
         
         /**
          * Impossible de créer/modifier une propriété
-         * 
+         * @param $offset
+         * @param $value
          */
         
         public function __set($offset, $value)
@@ -344,6 +362,7 @@
          * @param string $message=null Le message de l'erreur
          * @param int $code=0 Le code de l'erreur
          * @return ErrorException|null
+         * @throws ErrorException
          */
         public function error($message = null, $code = 0)
         {
