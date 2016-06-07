@@ -65,8 +65,13 @@
          */
         
         private $imagePath;
-        
-        
+
+        /**
+         * @var Exception
+         */
+        private $throwExceptions;
+
+
         /**
          * Image par défaut
          * 
@@ -295,6 +300,7 @@
          * Si l'url est invalide, l'image utilisée sera celle par défaut.
          * 
          * @param string $url=null L'URL de l'image.
+         * @param string $imageHost
          * @throws ErrorException
          */
         
@@ -407,6 +413,7 @@
          * @param string $message=null Le message de l'erreur
          * @param int $code=0 Le code de l'erreur
          * @return ErrorException|null
+         * @throws ErrorException
          */
         public function error($message = null, $code = 0)
         {
