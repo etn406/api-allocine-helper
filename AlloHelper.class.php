@@ -12,10 +12,10 @@
          * @var ErrorException|null
          */
         
-        protected static $_lastError;
+        public static $_lastError;
 
         /**
-         * @var bool Flag pour declencher des exceptions
+         * @var boolean Flag pour declencher des exceptions
          */
         protected $throwExceptions = ALLO_THROW_EXCEPTIONS;
 
@@ -57,6 +57,7 @@
          * @param string $message=null Le message de l'erreur
          * @param int $code=0 Le code de l'erreur
          * @return ErrorException|null
+         * @throws ErrorException
          */
         public function error($message = null, $code = 0)
         {
@@ -222,17 +223,18 @@
          * Les valeurs et les clés ne passent pas par la fonction urlencode !
          * 
          * @param string $type Le type de données à récupérer (exemple: "rest/v3/movie")
+         * @return string
          */
         
-        protected function creatURL($type)
+        protected function createURL($type)
         {
             $this->set(array(
                 'format' => 'json',
                 'partner' => $this->partner,
             ));
             $params = $this->getPresets();
-            $params['filter'] = implode(",", $params['filter']);
-            
+            $params['filter'] = isset($params['filter']) ? implode(",", $params['filter']) : null;
+
             $queryURL = $this->APIUrl . '/' . $type;
                   $searchQuery = str_replace('%2B', '+', http_build_query($params)) . '&sed=' . date('Ymd');
                   $toEncrypt = $this->allocineSecretKey . $searchQuery;
@@ -383,7 +385,7 @@
          * Récupérer les données pour un type de données et un élément du tableau retourné donné.
          * Utilisé en interne pour diminuer et clarifier le code dans les méthodes ne nécessitant pas de traitement particulier sur leurs données.
          * 
-         * @param string $type Voir AlloHelper::creatURL()
+         * @param string $type Voir AlloHelper::createURL()
          * @param string $container L'élément contenant les données dans le tableau retourné par Allociné
          * @return AlloData|array|false
          * @throws ErrorException
@@ -392,7 +394,7 @@
         protected function getData($type, $container, &$url)
         {
             // Récupération des données
-            $data = $this->getDataFromURL($url = $this->creatURL($type));
+            $data = $this->getDataFromURL($url = $this->createURL($type));
             
             // En cas d'erreur
             if (empty($data))
@@ -455,7 +457,7 @@
            ));
             
             // Création de l'URL
-            $url = $this->creatURL('rest/v3/search');
+            $url = $this->createURL('rest/v3/search');
             
             // Envoi de la requête
             $data = $this->getDataFromURL($url);
@@ -708,13 +710,13 @@
             // Récupération et revoi des données
             return $this->getData('rest/v3/showtimelist', 'feed', $url);
         }
-        
-        
+
+
         /**
          * Récupérer toutes les informations sur un film.
-         * 
+         *
          * @param int $code L'identifiant du film.
-         * @param int $profile='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
+         * @param int|string $profile ='medium' La quantité d'informations à renvoyer: 'small', 'medium', 'large', 1 pour 'small', 2 pour 'medium', 3 pour 'large'.
          * @param &$url Contiendra l'URL utilisé.
          * 
          * @return AlloData|array|false
@@ -741,7 +743,7 @@
            ));
             
             // Création de l'URL
-            $url = $this->creatURL('rest/v3/movie');
+            $url = $this->createURL('rest/v3/movie');
             
             // Envoi de la requête
             $data = $this->getDataFromURL($url);
@@ -775,7 +777,7 @@
                       $data['synopsisShort'] = preg_replace("#\p{L}\K[‘’](?=\p{L})#u", "'", $data['synopsisShort']);
                     
                     // On retourne les données
-                    if (class_exists('AlloData'))
+                    if (class_exists(AlloData::class))
                         return new AlloData($data, $this->utf8Decode);
                     else
                         return $data;
