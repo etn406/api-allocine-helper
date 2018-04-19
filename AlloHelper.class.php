@@ -444,9 +444,7 @@
                 return false;
             }
             
-            $accents = "àáâãäçèéêëìíîïñòóôõöùúûüýÿ'";
-            $normal  = 'aaaaaceeeeiiiinooooouuuuyy ';
-            $q = utf8_encode(strtr(strtolower(trim($q)), $accents, $normal));
+            $q = mb_convert_case(trim($q), MB_CASE_LOWER, "UTF-8");
             
             // Préréglages
             $this->set(array(

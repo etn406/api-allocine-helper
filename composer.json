@@ -2,13 +2,18 @@
   "name": "api-allocine/api-allocine-helper",
   "description": "An easy way to use the Allocine API",
   "type": "library",
-  "homepage": "https://github.com/etienne-gauvin/api-allocine-helper",
+  "homepage": "https://github.com/kira269/api-allocine-helper",
   "license": "CC-BY-SA",
   "authors": [
     {
       "name": "Etienne Gauvin",
-      "email": "etienne@gauvin.info"
-    }
+      "email": "etienne@gauvin.info",
+      "role": "Creator of the original project"
+    },
+    {
+      "name": "Valentin Salmeron",
+      "email": "valentin.salmeron.pro@gmail.com",
+      "role": "Developer"
   ],
   "require": {
     "php": ">=5.3.0"
