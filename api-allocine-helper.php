@@ -43,8 +43,8 @@
     */
     
     # Allociné.fr, France
-    define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
-    define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
+    //define('ALLO_DEFAULT_URL_API', "api.allocine.fr");
+    //define('ALLO_DEFAULT_URL_IMAGES', "images.allocine.fr");
     
     
     /** Languages (except french) don't work anymore :/ **/
@@ -62,8 +62,8 @@
     // define('ALLO_DEFAULT_URL_IMAGES', "bilder.filmstarts.de");
     
     # Sensacine.com, España
-    // define('ALLO_DEFAULT_URL_API', "api.sensacine.com");
-    // define('ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com");
+     define('ALLO_DEFAULT_URL_API', "api.sensacine.com");
+    define('ALLO_DEFAULT_URL_IMAGES', "imagenes.sensacine.com");
     
     # Adorocinema.com, Brasil
     // define('ALLO_DEFAULT_URL_API', "api.adorocinema.com");
