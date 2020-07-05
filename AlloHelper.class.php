@@ -507,9 +507,11 @@
                     // Tableau contenant $cleFilm => $similitude
                     $similitudes = array();
                     
-                    // Oncalcule la distance de levenstein entre la chaîne de recherche et le titre pour chaque film
+                    // On calcule la distance de levenstein entre la chaîne de recherche et le titre/title original pour chaque film
                     foreach ($movies as $i => &$m)
-                        $similitudes[$i] = levenshtein($q, strtr(strtolower($m['title']), $accents, $normal));
+                        $similitudes[$i] = min(
+                            levenshtein($q, strtr(strtolower($m['title']), $accents, $normal)),
+                            levenshtein($q, strtr(strtolower($m['originalTitle']), $accents, $normal)));
                     
                     // On réorganise le tableau des similitudes, mais en gardant les clés.
                     asort($similitudes, true);
